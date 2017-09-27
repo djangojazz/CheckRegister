@@ -20,6 +20,10 @@ namespace CheckRegister.Models
     public string UserName { get; set; }
     [XmlAttribute]
     public string Password { get; set; }
-    public List<Transaction> Transactions { get; set; }
+    public List<Transaction> Transactions { get; set; } = new List<Transaction>();
+    
+    public void AddTransaction(TransactionType type, double amount) => Transactions.Add(new Transaction(type, amount));
+    public double GetTotalOfTransactionType(TransactionType type) => (!Transactions?.Any(x => x.TransactionType == type) ?? true) ? 0 : Transactions.Where(x => x.TransactionType == type)?.Select(x => x.Amount)?.Sum() ?? 0;
+    public double GetCurrentBalance() => GetTotalOfTransactionType(TransactionType.Credit) - GetTotalOfTransactionType(TransactionType.Debit);
   }
 }

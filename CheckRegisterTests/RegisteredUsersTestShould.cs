@@ -3,6 +3,7 @@ using CheckRegister.Models;
 using CheckRegister;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace CheckRegisterTests
 {
@@ -10,6 +11,7 @@ namespace CheckRegisterTests
    * THOUGHTS ON IMPROVEMENTS
    *  PERMANENT DATA STORE = Database, Blob storage in cloud, etc.
    *  ENCRYPTION = Users should have passwords encrypted with basic encryption most likely.
+   *  DESTRUCTORS AND DISPOSING = Probably overkill for an example but when things get larger and resources may become unmanaged with third parties could be an issue.
    *  AMENDING AN OLDER TRANSACTION = Ability to go back when doing a reconciliation and alter an existing transaction
    *  CHECK A BALANCE ON AN EARLIER DATE = See how your trend of spending was working by seeing where you started versus where you are at now.
    *  MAYBE NOT USE STATIC CLASSES = For mockability you would probably interface more things and use MOQ or similar for unit test mocks.
@@ -37,23 +39,33 @@ namespace CheckRegisterTests
     public void BeAbleToSerializeAndDeserializeCollectionToAndFromDisk()
     {
       //Assign 
+      bool exists = false;
       RegisteredUsers.Users = new List<User> { _user, _user2 };
 
       //Act
       var xml = RegisteredUsers.Users.SerializeToXml();
-      using (var sw = new StreamWriter(_xmlFileLocation))
-      {
-        sw.Write(xml);
-      }
+      using (var sw = new StreamWriter(_xmlFileLocation)) { sw.Write(xml); }
+      using (var sr = new StreamReader(_xmlFileLocation)) { exists = !string.IsNullOrEmpty(sr.ReadToEnd()); }
+      File.Delete(_xmlFileLocation);
 
-      bool exists = false;
-      using (var sr = new StreamReader(_xmlFileLocation))
-      {
-        exists = !string.IsNullOrEmpty(sr.ReadToEnd());
-      }
-      
       //Assert
       Assert.IsTrue(exists, "Expected valid xml");
+    }
+    
+    [TestMethod]
+    public void BeAbleToAddNewEntriesAndDetermineBalance()
+    {
+      //Assign
+      _user.AddTransaction(TransactionType.Debit, 20);
+
+      //Act
+      var balance1 = _user.GetCurrentBalance();
+      _user.AddTransaction(TransactionType.Debit, 10);
+      var balance2 = _user.GetCurrentBalance();
+
+      //Assert
+      Assert.AreEqual(30, balance1, "Balance Should be 30");
+      Assert.AreEqual(20, balance2, "Balance Should be 20");
     }
   }
 }
