@@ -24,11 +24,40 @@ namespace CommandLineCheckRegister
       Console.ReadLine();
     }
 
-    private static void DetermineUser()
+    private static User DetermineUser()
     {
-      Console.WriteLine(CreateHeader("What is your name?"));
-      var user = Console.ReadLine();
-      Console.WriteLine($"Hello {user}");
+      Console.WriteLine(CreateHeader("Who are you?"));
+
+      var userInput = Console.ReadLine();
+      var user = GetCurrentUserIfTheyExist(userInput);
+      
+      if(user == null)
+      {
+        Console.WriteLine("You are currently not in the system would you like to be added?");
+        var response = Console.ReadLine();
+
+        if(response?.Length > 0 && response?.Substring(0, 1).ToLower() == "y") 
+        {
+          Console.WriteLine("What would you like your username to be?");
+          var newUserName = Console.ReadLine();
+          Console.WriteLine("What would you like your password to be?");
+          var newPasword = Console.ReadLine();
+          RegisteredUsers.Adduser(newUserName, newPasword);
+
+          var newUser = RegisteredUsers.Users.Single(x => x.UserName == newUserName);
+          newUser.IsAuthenticated = true;
+          return newUser;
+        }
+      }
+
+     
+        Console.WriteLine($"Welcome back {user.UserName}!  Please login to continue.");
+        var password = Console.ReadLine();
+        if (user.Password == password) { return user; }
+        else DetermineUser();
+      
+
+      return null;
     }
 
     private static string CreateHeader(string text)
@@ -74,9 +103,17 @@ namespace CommandLineCheckRegister
       using (var sw = new StreamWriter(_xmlFileLocation)) { sw.Write(xml); }
     }
 
-    //private static User GetCurrentUserIfTheyExist()
+    //private static User GetCurrentUserIfTheyExist(string userName)
     //{
+    //  var exists = new FileInfo(_xmlFileLocation).Exists;
+    //  if(!exists) { return null;  }
 
+    //  using (var sr = new StreamReader(_xmlFileLocation))
+    //  {
+    //    var text = sr.ReadToEnd()?.ToString();
+    //    if (exists) { RegisteredUsers.Users = text.DeserializeXml<List<User>>(); }
+    //    return RegisteredUsers.Users.SingleOrDefault(x => x.UserName == userName) ?? null;
+    //  }
     //}
   }
 }

@@ -8,9 +8,10 @@ using System.Linq;
 namespace CheckRegisterTests
 {
   /*
-   * THOUGHTS ON IMPROVEMENTS
+   * THOUGHTS ON IMPROVEMENTS BUT WOULD TAKE MORE CODING
    *  PERMANENT DATA STORE = Database, Blob storage in cloud, etc.
    *  ENCRYPTION = Users should have passwords encrypted with basic encryption most likely.
+   *  SECURITY = Multiple Users could see other users, a database and pattern would fix this.
    *  DESTRUCTORS AND DISPOSING = Probably overkill for an example but when things get larger and resources may become unmanaged with third parties could be an issue.
    *  AMENDING AN OLDER TRANSACTION = Ability to go back when doing a reconciliation and alter an existing transaction
    *  CHECK A BALANCE ON AN EARLIER DATE = See how your trend of spending was working by seeing where you started versus where you are at now.
@@ -31,12 +32,12 @@ namespace CheckRegisterTests
     [TestInitialize]
     public void TestInitialize()
     {
-      _user = new User("Test", "password", new Transaction(TransactionType.Credit, 100), new Transaction(TransactionType.Debit, 50));
-      _user2 = new User("Test2", "password2", new Transaction(TransactionType.Credit, 200), new Transaction(TransactionType.Debit, 100));
+      _user = new User("Test", "password", true, new Transaction(TransactionType.Credit, 100), new Transaction(TransactionType.Debit, 50));
+      _user2 = new User("Test2", "password2", false, new Transaction(TransactionType.Credit, 200), new Transaction(TransactionType.Debit, 100));
     }
 
     [TestMethod]
-    public void BeAbleToSerializeAndDeserializeCollectionToAndFromDisk()
+    public void BeAbleToSerializeAndDeserializeCollectionToAndFromDiskAndCheckUsers()
     {
       //Assign 
       RegisteredUsers.Users = new List<User> { _user, _user2 };
@@ -50,17 +51,19 @@ namespace CheckRegisterTests
 
       var exists = new FileInfo(_xmlFileLocation).Exists;
       Assert.IsTrue(exists, "Expected valid xml");
-      
-      using (var sr = new StreamReader(_xmlFileLocation))
-      {
-        var text = sr.ReadToEnd()?.ToString();
-        if (exists) { RegisteredUsers.Users = text.DeserializeXml<List<User>>(); }
-      }
+
+      var user1 = _xmlFileLocation.GetCurrentUserIfTheyExist("Test");
+      user1.AuthenticateUser("password");
+      var user2 = _xmlFileLocation.GetCurrentUserIfTheyExist("Testt");
       File.Delete(_xmlFileLocation);
 
       //Assert
       Assert.IsNull(usersAfterFileSave, "Expected to be null");
+      Assert.IsNotNull(user1, "Expected to be not null");
+      Assert.IsNull(user2, "Expected to be null");
       Assert.AreEqual(2, RegisteredUsers.Users.Count, "Should be two users");
+      Assert.AreEqual(true, RegisteredUsers.Users[0].IsAuthenticated, "First User should be authenticated");
+      Assert.AreEqual(false, RegisteredUsers.Users[1].IsAuthenticated, "Second User should be unAuthenticated");
     }
     
     [TestMethod]
