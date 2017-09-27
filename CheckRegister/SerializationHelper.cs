@@ -3,6 +3,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace CheckRegister
 {
@@ -46,6 +47,19 @@ namespace CheckRegister
       else
       {
         return new XmlSerializer(typeToSerialize);
+      }
+    }
+
+    public static bool ValidateXml(this string xmlInput)
+    {
+      try
+      {
+        XElement.Parse(xmlInput);
+        return true;
+      }
+      catch (Exception)
+      {
+        return false;
       }
     }
   }

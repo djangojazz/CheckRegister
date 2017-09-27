@@ -1,5 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CheckRegister.Models;
+using CheckRegister;
+using System.Collections.Generic;
+using System.IO;
 
 namespace CheckRegisterTests
 {
@@ -19,9 +22,38 @@ namespace CheckRegisterTests
   [TestClass]
   public class CheckRegister
   {
-    [TestMethod]
-    public void TestMethod1()
+    private User _user;
+    private User _user2;
+    private const string _xmlFileLocation = "RegisteredUsers.xml";
+
+    [TestInitialize]
+    public void TestInitialize()
     {
+      _user = new User("Test", "password", new Transaction(TransactionType.Credit, 100), new Transaction(TransactionType.Debit, 50));
+      _user2 = new User("Test2", "password2", new Transaction(TransactionType.Credit, 200), new Transaction(TransactionType.Debit, 100));
+    }
+
+    [TestMethod]
+    public void BeAbleToSerializeAndDeserializeCollectionToAndFromDisk()
+    {
+      //Assign 
+      RegisteredUsers.Users = new List<User> { _user, _user2 };
+
+      //Act
+      var xml = RegisteredUsers.Users.SerializeToXml();
+      using (var sw = new StreamWriter(_xmlFileLocation))
+      {
+        sw.Write(xml);
+      }
+
+      bool exists = false;
+      using (var sr = new StreamReader(_xmlFileLocation))
+      {
+        exists = !string.IsNullOrEmpty(sr.ReadToEnd());
+      }
+      
+      //Assert
+      Assert.IsTrue(exists, "Expected valid xml");
     }
   }
 }
