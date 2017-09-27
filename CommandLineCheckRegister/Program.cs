@@ -19,8 +19,7 @@ namespace CommandLineCheckRegister
 
     static void Main(string[] args)
     {
-      Console.WriteLine(CreateHeader("Who are you?"));
-      _user = DetermineUser();
+      DetermineUser();
       Console.WriteLine(CreateHeader($"Welcome {_user.UserName}, please login to continue."));
       Login();
       DetermineAction();
@@ -28,12 +27,14 @@ namespace CommandLineCheckRegister
       Console.ReadLine();
     }
 
-    private static User DetermineUser()
+    private static void DetermineUser()
     {
+      Console.WriteLine(CreateHeader("Who are you?"));
       var userInput = Console.ReadLine();
-      var user = _xmlFileLocation.GetCurrentUserIfTheyExist(userInput);
+      _user = _xmlFileLocation.GetCurrentUserIfTheyExist(userInput);
+      if (_user != null) { return; }
       
-      if(user == null)
+      while(_user == null)
       {
         Console.WriteLine("You are currently not in the system would you like to be added? (Y/N)");
         var response = Console.ReadLine();
@@ -47,30 +48,32 @@ namespace CommandLineCheckRegister
           RegisteredUsers.Adduser(newUserName, newPasword);
 
           CreateFileOrAppendToIt();
-          return RegisteredUsers.Users.Single(x => x.UserName == newUserName);
+          _user = RegisteredUsers.Users.Single(x => x.UserName == newUserName);
         }
-        else { DetermineUser(); }
+        else
+        {
+          DetermineUser();
+        }
       }
-
-      return user;
     }
 
-    private static void Login(int i = 0)
+    private static void Login(int i = 1)
     {
       var password = Console.ReadLine();
-      while(!_user.AuthenticateUser(password) && i <= 2)
+      
+      var authenticated = _user.AuthenticateUser(password);
+      if (authenticated) { return; }
+      
+      if (i == 3)
       {
-        if(i == 2)
-        {
-          Console.WriteLine("Failed three attempts exiting program for security");
-          Console.ReadLine();
-          Environment.Exit(-1);
-        }
-
-        Console.WriteLine($"Your password is incorrect please try again ({i}/3)");
-        i++;
-        Login(i);
+        Console.WriteLine("Failed three attempts exiting program for security (3/3)");
+        Console.ReadLine();
+        Environment.Exit(-1);
       }
+      else { Console.WriteLine($"Your password is incorrect please try again ({i}/3)"); }
+
+      i++;
+      Login(i);
     }
 
     private static void DetermineAction()
