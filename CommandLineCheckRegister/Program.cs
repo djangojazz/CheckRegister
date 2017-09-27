@@ -23,7 +23,7 @@ namespace CommandLineCheckRegister
       _user = DetermineUser();
       Console.WriteLine(CreateHeader($"Welcome {_user.UserName}, please login to continue."));
       Login();
-      Console.WriteLine(CreateHeader($"What would like to do.", "\t1. Make a Deposit", "\t2. Make a Withdrawal", "\t3. Check your balance", "\t4. See transactions"));
+      Console.WriteLine(CreateHeader($"What would like to do.", "1. Make a Deposit  ", "2. Make a Withdrawal", "3. Check balance   ", "4. See transactions", "5. Logout and Exit  "));
       DetermineAction();
 
       Console.ReadLine();
@@ -76,15 +76,51 @@ namespace CommandLineCheckRegister
 
     private static void DetermineAction()
     {
-      var acceptable = new List<string> { "1", "2", "3", "4" };
+      var acceptable = new List<string> { "1", "2", "3", "4", "5" };
       var input = Console.ReadLine();
       if(!acceptable.Contains(input))
       {
-        Console.WriteLine("You chose an invalid option, please select either 1: Deposit, 2: Withdrawal, 3. Balance, or 4. Transactions");
+        Console.WriteLine("You chose an invalid option, please select either 1 Deposit, 2 Withdrawal, 3 Balance, 4 Transactions, or 5 Logout Exit");
         DetermineAction();
       }
-      
 
+      double valueNumber = 0;
+
+      if (input == "1" || input == "2")
+      {
+        Console.WriteLine("What amount is your deposit for?");
+        var inputNumber = Console.ReadLine();
+
+        var isANumber = double.TryParse(inputNumber, out valueNumber);
+        if(!isANumber)
+        {
+          Console.WriteLine($"{inputNumber} is not a valid number, let's try again 1 Deposit, 2 Withdrawal, 3 Balance, 4 Transactions, or 5 Logout Exit");
+          DetermineAction();
+        }
+
+        if(input == "1") { _user.AddTransaction(TransactionType.Credit, valueNumber); }
+        else { _user.AddTransaction(TransactionType.Debit, valueNumber); }
+        DetermineAction();
+      }
+      else if(input == "3")
+      {
+        Console.WriteLine($"Your current balance is: {_user.GetCurrentBalance()}");
+        DetermineAction();
+      }
+      else if (input == "4")
+      {
+        StringBuilder sb = new StringBuilder("Your current Transactions are");
+        _user.Transactions.ForEach(x => sb.Append($"{Environment.NewLine}\tAmount: {x.Amount} Created: {x.Created.ToString("MM/dd/yyyy hh:mm:ss")}"));
+        Console.WriteLine(sb.ToString());
+        DetermineAction();
+      }
+      else if (input == "5")
+      {
+        Console.WriteLine("Logging out, goodbye");
+        CreateFileOrAppendToIt();
+        Console.ReadLine();
+        Environment.Exit(0);
+      }
     }
 
     private static string CreateHeader(string text, params string[] extraText)
@@ -98,21 +134,21 @@ namespace CommandLineCheckRegister
       
       Action<string> AddLineWithLength = (txt) =>
       {
-        var length = _headerLength - (text.Length + (_paddingLength * 2));
+        var length = _headerLength - (txt.Length + (_paddingLength * 2));
 
         if (length > 0)
         {
           var padding = length / 2;
           AppendTextForLoop(_paddingLength, _decorator, false);
           AppendTextForLoop(padding, " ", false);
-          sb.Append(text);
+          sb.Append(txt);
 
           if (length % 2 == 0) { AppendTextForLoop(padding, " ", false); }
           else { AppendTextForLoop(padding + 1, " ", false); }
 
           AppendTextForLoop(_paddingLength, _decorator, false);
         }
-        else { sb.Append(text);  }
+        else { sb.Append(txt);  }
 
         sb.Append(Environment.NewLine);
       };
