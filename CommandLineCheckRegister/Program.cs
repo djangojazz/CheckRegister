@@ -74,9 +74,9 @@ namespace CommandLineCheckRegister
       using (var sw = new StreamWriter(_xmlFileLocation)) { sw.Write(xml); }
     }
 
-    private static User GetCurrentUserIfTheyExist()
-    {
+    //private static User GetCurrentUserIfTheyExist()
+    //{
 
-    }
+    //}
   }
 }
