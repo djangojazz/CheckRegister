@@ -39,17 +39,28 @@ namespace CheckRegisterTests
     public void BeAbleToSerializeAndDeserializeCollectionToAndFromDisk()
     {
       //Assign 
-      bool exists = false;
       RegisteredUsers.Users = new List<User> { _user, _user2 };
 
       //Act
       var xml = RegisteredUsers.Users.SerializeToXml();
+      RegisteredUsers.Users = null;
+      var usersAfterFileSave = RegisteredUsers.Users;
+
       using (var sw = new StreamWriter(_xmlFileLocation)) { sw.Write(xml); }
-      using (var sr = new StreamReader(_xmlFileLocation)) { exists = !string.IsNullOrEmpty(sr.ReadToEnd()); }
+
+      var exists = new FileInfo(_xmlFileLocation).Exists;
+      Assert.IsTrue(exists, "Expected valid xml");
+      
+      using (var sr = new StreamReader(_xmlFileLocation))
+      {
+        var text = sr.ReadToEnd()?.ToString();
+        if (exists) { RegisteredUsers.Users = text.DeserializeXml<List<User>>(); }
+      }
       File.Delete(_xmlFileLocation);
 
       //Assert
-      Assert.IsTrue(exists, "Expected valid xml");
+      Assert.IsNull(usersAfterFileSave, "Expected to be null");
+      Assert.AreEqual(2, RegisteredUsers.Users.Count, "Should be two users");
     }
     
     [TestMethod]
