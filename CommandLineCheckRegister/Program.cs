@@ -23,7 +23,6 @@ namespace CommandLineCheckRegister
       _user = DetermineUser();
       Console.WriteLine(CreateHeader($"Welcome {_user.UserName}, please login to continue."));
       Login();
-      Console.WriteLine(CreateHeader($"What would like to do.", "1. Make a Deposit  ", "2. Make a Withdrawal", "3. Check balance   ", "4. See transactions", "5. Logout and Exit  "));
       DetermineAction();
 
       Console.ReadLine();
@@ -76,11 +75,14 @@ namespace CommandLineCheckRegister
 
     private static void DetermineAction()
     {
+      Console.WriteLine(CreateHeader($"What would like to do.", "1= Make a Deposit  ", "2= Make a Withdrawal", "3= Check balance   ", "4= See transactions", "5= Logout and Exit  "));
+
       var acceptable = new List<string> { "1", "2", "3", "4", "5" };
       var input = Console.ReadLine();
       if(!acceptable.Contains(input))
       {
         Console.WriteLine("You chose an invalid option, please select either 1 Deposit, 2 Withdrawal, 3 Balance, 4 Transactions, or 5 Logout Exit");
+        Console.WriteLine();
         DetermineAction();
       }
 
@@ -98,13 +100,16 @@ namespace CommandLineCheckRegister
           DetermineAction();
         }
 
-        if(input == "1") { _user.AddTransaction(TransactionType.Credit, valueNumber); }
-        else { _user.AddTransaction(TransactionType.Debit, valueNumber); }
+        TransactionType type = (input == "1") ? TransactionType.Credit : TransactionType.Debit;
+        _user.AddTransaction(type, valueNumber); 
+        Console.WriteLine($"Accepted {type} for {valueNumber}");
+        Console.WriteLine();
         DetermineAction();
       }
       else if(input == "3")
       {
         Console.WriteLine($"Your current balance is: {_user.GetCurrentBalance()}");
+        Console.WriteLine();
         DetermineAction();
       }
       else if (input == "4")
@@ -112,6 +117,7 @@ namespace CommandLineCheckRegister
         StringBuilder sb = new StringBuilder("Your current Transactions are");
         _user.Transactions.ForEach(x => sb.Append($"{Environment.NewLine}\tAmount: {x.Amount} Created: {x.Created.ToString("MM/dd/yyyy hh:mm:ss")}"));
         Console.WriteLine(sb.ToString());
+        Console.WriteLine();
         DetermineAction();
       }
       else if (input == "5")
