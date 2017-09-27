@@ -8,5 +8,6 @@ namespace CheckRegister
 {
     public class Class1
     {
+
     }
 }
