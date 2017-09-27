@@ -15,25 +15,28 @@ namespace CommandLineCheckRegister
     private const int _headerLength = 64;
     private const string _decorator = "-";
     private const int _paddingLength = 4;
-
+    private static User _user;
 
     static void Main(string[] args)
     {
-      DetermineUser();
+      Console.WriteLine(CreateHeader("Who are you?"));
+      _user = DetermineUser();
+      Console.WriteLine(CreateHeader($"Welcome {_user.UserName}, please login to continue."));
+      Login();
+      Console.WriteLine(CreateHeader($"What would like to do.", "\t1. Make a Deposit", "\t2. Make a Withdrawal", "\t3. Check your balance", "\t4. See transactions"));
+      DetermineAction();
 
       Console.ReadLine();
     }
 
     private static User DetermineUser()
     {
-      Console.WriteLine(CreateHeader("Who are you?"));
-
       var userInput = Console.ReadLine();
-      var user = GetCurrentUserIfTheyExist(userInput);
+      var user = _xmlFileLocation.GetCurrentUserIfTheyExist(userInput);
       
       if(user == null)
       {
-        Console.WriteLine("You are currently not in the system would you like to be added?");
+        Console.WriteLine("You are currently not in the system would you like to be added? (Y/N)");
         var response = Console.ReadLine();
 
         if(response?.Length > 0 && response?.Substring(0, 1).ToLower() == "y") 
@@ -44,23 +47,47 @@ namespace CommandLineCheckRegister
           var newPasword = Console.ReadLine();
           RegisteredUsers.Adduser(newUserName, newPasword);
 
-          var newUser = RegisteredUsers.Users.Single(x => x.UserName == newUserName);
-          newUser.IsAuthenticated = true;
-          return newUser;
+          CreateFileOrAppendToIt();
+          return RegisteredUsers.Users.Single(x => x.UserName == newUserName);
         }
+        else { DetermineUser(); }
       }
 
-     
-        Console.WriteLine($"Welcome back {user.UserName}!  Please login to continue.");
-        var password = Console.ReadLine();
-        if (user.Password == password) { return user; }
-        else DetermineUser();
-      
-
-      return null;
+      return user;
     }
 
-    private static string CreateHeader(string text)
+    private static void Login(int i = 0)
+    {
+      var password = Console.ReadLine();
+      while(!_user.AuthenticateUser(password) && i <= 2)
+      {
+        if(i == 2)
+        {
+          Console.WriteLine("Failed three attempts exiting program for security");
+          Console.ReadLine();
+          Environment.Exit(-1);
+        }
+
+        Console.WriteLine($"Your password is incorrect please try again ({i}/3)");
+        i++;
+        Login(i);
+      }
+    }
+
+    private static void DetermineAction()
+    {
+      var acceptable = new List<string> { "1", "2", "3", "4" };
+      var input = Console.ReadLine();
+      if(!acceptable.Contains(input))
+      {
+        Console.WriteLine("You chose an invalid option, please select either 1: Deposit, 2: Withdrawal, 3. Balance, or 4. Transactions");
+        DetermineAction();
+      }
+      
+
+    }
+
+    private static string CreateHeader(string text, params string[] extraText)
     {
       StringBuilder sb = new StringBuilder();
       Action<int, string, bool> AppendTextForLoop = (l, t, nl) => 
@@ -92,28 +119,18 @@ namespace CommandLineCheckRegister
 
       AppendTextForLoop(_headerLength, _decorator, true);
       AddLineWithLength(text);
+      foreach(var t in extraText)
+      {
+        AddLineWithLength(t);
+      }
       AppendTextForLoop(_headerLength, _decorator, true);
 
       return sb.ToString();
     }
     
-    private static void CreateFileOrAppendToIt()
+    private static void CreateFileOrAppendToIt() 
     {
-      var xml = RegisteredUsers.Users.SerializeToXml();
-      using (var sw = new StreamWriter(_xmlFileLocation)) { sw.Write(xml); }
+      using (var sw = new StreamWriter(_xmlFileLocation)) { sw.Write(RegisteredUsers.Users.SerializeToXml()); }
     }
-
-    //private static User GetCurrentUserIfTheyExist(string userName)
-    //{
-    //  var exists = new FileInfo(_xmlFileLocation).Exists;
-    //  if(!exists) { return null;  }
-
-    //  using (var sr = new StreamReader(_xmlFileLocation))
-    //  {
-    //    var text = sr.ReadToEnd()?.ToString();
-    //    if (exists) { RegisteredUsers.Users = text.DeserializeXml<List<User>>(); }
-    //    return RegisteredUsers.Users.SingleOrDefault(x => x.UserName == userName) ?? null;
-    //  }
-    //}
   }
 }

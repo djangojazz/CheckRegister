@@ -12,9 +12,7 @@ namespace CheckRegister
     public static List<User> Users { get; set; } = new List<User>();
 
     public static void Adduser(string userName, string password) => Users.Add(new User(userName, password));
-
-    public static void AuthenticateUser(this User user, string password) => user.IsAuthenticated = (user.Password == password);
-
+    
     public static User GetCurrentUserIfTheyExist(this string location, string userName)
     {
       var exists = new FileInfo(location).Exists;

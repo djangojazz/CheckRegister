@@ -9,12 +9,10 @@ namespace CheckRegister.Models
   public sealed class User
   {
     public User() {}
-    public User(string userName, string password, bool authenticated = false, params Transaction[] transactions)
+    public User(string userName, string password)
     {
       UserName = userName;
       Password = password;
-      IsAuthenticated = authenticated;
-      if(transactions.Any()) { Transactions = transactions.ToList(); }
     }
 
     [XmlAttribute]
@@ -26,6 +24,7 @@ namespace CheckRegister.Models
     public List<Transaction> Transactions { get; set; } = new List<Transaction>();
     
     public void AddTransaction(TransactionType type, double amount) => Transactions.Add(new Transaction(type, amount));
+    public bool AuthenticateUser(string password) => IsAuthenticated = (Password == password);
     public double GetTotalOfTransactionType(TransactionType type) => (!Transactions?.Any(x => x.TransactionType == type) ?? true) ? 0 : Transactions.Where(x => x.TransactionType == type)?.Select(x => x.Amount)?.Sum() ?? 0;
     public double GetCurrentBalance() => GetTotalOfTransactionType(TransactionType.Credit) - GetTotalOfTransactionType(TransactionType.Debit);
   }

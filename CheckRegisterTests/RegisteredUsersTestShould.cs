@@ -32,8 +32,8 @@ namespace CheckRegisterTests
     [TestInitialize]
     public void TestInitialize()
     {
-      _user = new User("Test", "password", true, new Transaction(TransactionType.Credit, 100), new Transaction(TransactionType.Debit, 50));
-      _user2 = new User("Test2", "password2", false, new Transaction(TransactionType.Credit, 200), new Transaction(TransactionType.Debit, 100));
+      _user = new User("Test", "password") { Transactions = new List<Transaction> { new Transaction(TransactionType.Credit, 100), new Transaction(TransactionType.Debit, 50) } };
+      _user2 = new User("Test2", "password2") { Transactions = new List<Transaction> { new Transaction(TransactionType.Credit, 200), new Transaction(TransactionType.Debit, 100) } };
     }
 
     [TestMethod]
@@ -43,22 +43,22 @@ namespace CheckRegisterTests
       RegisteredUsers.Users = new List<User> { _user, _user2 };
 
       //Act
+      //Serialize operations
       var xml = RegisteredUsers.Users.SerializeToXml();
-      RegisteredUsers.Users = null;
-      var usersAfterFileSave = RegisteredUsers.Users;
-
       using (var sw = new StreamWriter(_xmlFileLocation)) { sw.Write(xml); }
-
       var exists = new FileInfo(_xmlFileLocation).Exists;
       Assert.IsTrue(exists, "Expected valid xml");
 
+      //Null out to blank out users
+      RegisteredUsers.Users = null;
+      
+      //Show that users can be remembered from xml store.
       var user1 = _xmlFileLocation.GetCurrentUserIfTheyExist("Test");
       user1.AuthenticateUser("password");
       var user2 = _xmlFileLocation.GetCurrentUserIfTheyExist("Testt");
       File.Delete(_xmlFileLocation);
 
       //Assert
-      Assert.IsNull(usersAfterFileSave, "Expected to be null");
       Assert.IsNotNull(user1, "Expected to be not null");
       Assert.IsNull(user2, "Expected to be null");
       Assert.AreEqual(2, RegisteredUsers.Users.Count, "Should be two users");
