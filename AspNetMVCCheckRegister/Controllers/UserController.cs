@@ -9,19 +9,12 @@ namespace AspNetMVCCheckRegister.Controllers
 {
   public class UserController : Controller
   {
-    //
-    // GET: /User/
-    public ActionResult Index()
-    {
-      return View();
-    }
-
     [HttpGet]
-    public ActionResult Login()
+    public ActionResult Login(string username, string password)
     {
-      return View(new User());
+        return View(new User());
     }
-
+      
     [HttpGet]
     public ActionResult NewUser()
     {
@@ -34,7 +27,6 @@ namespace AspNetMVCCheckRegister.Controllers
       if (ModelState.IsValid)
       {
         if (user.Exists)
-          //user.IsValid(user.UserName, user.Password))
         {
           return RedirectToAction("Index", "Home", new User(user.UserName, user.Password));
         }

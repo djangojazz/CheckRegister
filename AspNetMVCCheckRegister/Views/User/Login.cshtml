@@ -1,10 +1,13 @@
 ﻿@model AspNetMVCCheckRegister.Models.User
+@using Newtonsoft.Json;
 @{
   ViewBag.Title = "Login";
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @using (Html.BeginForm())
 {
+
   @Html.ValidationSummary(true, "Login failed, please try again.");
   <div class="col-lg-offset-10">
     <h2>Login</h2>
@@ -12,26 +15,41 @@
       @Html.LabelFor(u => u.UserName)
     </div>
     <div class="editor-field">
-      @Html.TextBoxFor(u => u.UserName)
+      @Html.TextBoxFor(u => u.UserName, new { @id = "userName", @onchange = "userNameChanged();" })
       @Html.ValidationMessageFor(u => u.UserName)
     </div>
     <div class="editor-label">
       @Html.LabelFor(u => u.Password)
     </div>
-    <div class="editor-field">
-      @Html.PasswordFor(u => u.Password)
+    <div class="editor-field">      
+      @Html.PasswordFor(u => u.Password, new { @id = "password", @onchange = "userNameChanged();" })
       @Html.ValidationMessageFor(u => u.Password)
     </div>
     <br />
 
-    @if (Model.Exists == true)
-    {
-      <input type="submit" value="Log In" class="btn btn-info" />
-    }
-    else
-    {
-      <input type="submit" value="Create New User" class="btn btn-success" />
-    }
+    <input type="submit" value="Login/Create New User" class="btn btn-success" />
+    <script src="~/Scripts/loginSite.js"></script>
 
+    <script type="text/javascript">
+      function userNameChanged() {
+        var userNameText = $('#userName').val();
+        var passwordText = $('#password').val();
+
+        $.ajax({
+          url: '@Url.Action("Login", "User")',
+          data: { "username": userNameText, "password": passwordText },
+          success: function(data){
+            //call is successfully completed and we got result in data
+          },
+          error:function (xhr, ajaxOptions, thrownError){
+                          //some errror, some show err msg to user and log the error
+                          alert(xhr.responseText);
+
+                        }
+          });
+        
+        //alert(userNameText);
+        }
+    </script>
   </div>
 }
