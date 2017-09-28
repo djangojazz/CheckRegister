@@ -22,11 +22,13 @@
               {
                 <strong>@Html.Encode(User.Identity.Name)</strong>
                 @Html.ActionLink("Sign Out", "Logout", "User")
+                <br/>
                 @Html.ActionLink("Create a Transaction", "Index", "Transaction")
               }
               else
               {
                 @Html.ActionLink("Sign In", "Login", "User")
+                <br />
                 @Html.ActionLink("Create a Transaction", "Index", "Transaction")
               }
             </div>

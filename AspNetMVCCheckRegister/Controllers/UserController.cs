@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AspNetMVCCheckRegister.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -29,7 +30,7 @@ namespace AspNetMVCCheckRegister.Controllers
         if (user.IsValid(user.UserName, user.Password))
         {
           //FormsAuthentication.SetAuthCookie(user.UserName, user.RememberMe);
-          return RedirectToAction("Index", "Home");
+          return RedirectToAction("Index", "Home", new CheckRegister.Models.User("b", "b") { IsAuthenticated = true});
         }
         else
         {

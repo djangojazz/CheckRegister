@@ -5,7 +5,7 @@
 }
 @using (Html.BeginForm())
 {
-  @Html.ValidationSummary(true, "Login failed. Check your login details.");
+  @Html.ValidationSummary(true, "Login failed, please try again.");
   <div>
     <fieldset>
       <legend>Login</legend>
@@ -23,11 +23,8 @@
         @Html.PasswordFor(u => u.Password)
         @Html.ValidationMessageFor(u => u.Password)
       </div>
-      <div class="editor-label">
-        @Html.CheckBoxFor(u => u.RememberMe)
-        @Html.LabelFor(u => u.RememberMe)
-      </div>
-      <input type="submit" value="Log In" />
+      <br />
+      <input type="submit" value="Log In" class="btn btn-success" />
     </fieldset>
   </div>
 }
