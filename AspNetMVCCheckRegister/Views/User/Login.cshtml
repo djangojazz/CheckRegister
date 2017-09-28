@@ -1,4 +1,4 @@
-﻿@model AspNetMVCCheckRegister.Models.User
+﻿@model AspNetMVCCheckRegister.Models.WebUser
 @{
   ViewBag.Title = "Login";
   Layout = "~/Views/Shared/_Layout.cshtml";
@@ -26,14 +26,16 @@
     </div>
     <br />
 
-    @if (Model.Exists == true)
+    @*@if (Model.Exists == true)
     {
       <input type="submit" value="Log In" class="btn btn-info" />
     }
     else
     {
       <input type="submit" value="Create New User" class="btn btn-success" />
-    }
+    }*@
+
+    <input type="submit" value="Create New User" class="btn btn-success" />
 
     <script src="~/Scripts/loginSite.js"></script>
 
@@ -46,9 +48,9 @@
           url: '@Url.Action("Login", "User")',
           data: { "username": userNameText, "password": passwordText },
           success: function(data){
-            var exists = '@Model.Exists';
+            @*var exists = '@Model.Exists';
 
-            alert(exists);
+            alert(exists);*@
           },
           error:function (xhr, ajaxOptions, thrownError){ alert(xhr.responseText); }
           });
