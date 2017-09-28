@@ -20,7 +20,7 @@ namespace CommandLineCheckRegister
     static void Main(string[] args)
     {
       DetermineUser();
-      Console.WriteLine(CreateHeader($"Welcome {_user.UserName}, please login to continue."));
+      Console.WriteLine(CreateHeader($"Welcome {_user.UserName}, please enter your password to continue."));
       Login();
       DetermineAction();
 
@@ -78,7 +78,7 @@ namespace CommandLineCheckRegister
 
     private static void DetermineAction()
     {
-      Console.WriteLine(CreateHeader($"What would like to do.", "1= Make a Deposit  ", "2= Make a Withdrawal", "3= Check balance   ", "4= See transactions", "5= Logout and Exit  "));
+      Console.WriteLine(CreateHeader($"What would you like to do.", "1= Make a Deposit  ", "2= Make a Withdrawal", "3= Check balance   ", "4= See transactions", "5= Logout and Exit  "));
 
       var acceptable = new List<string> { "1", "2", "3", "4", "5" };
       var input = Console.ReadLine();
@@ -105,7 +105,8 @@ namespace CommandLineCheckRegister
 
         TransactionType type = (input == "1") ? TransactionType.Credit : TransactionType.Debit;
         _user.AddTransaction(type, valueNumber); 
-        Console.WriteLine($"Accepted {type} for {valueNumber}");
+        var textType = (type == TransactionType.Credit) ? "Deposit" : "Withdrawal";
+        Console.WriteLine($"Accepted {textType} for {valueNumber}");
         Console.WriteLine();
         DetermineAction();
       }
