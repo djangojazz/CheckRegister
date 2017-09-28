@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckRegisterTests", "Check
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineCheckRegister", "CommandLineCheckRegister\CommandLineCheckRegister.csproj", "{93028D0E-9FD9-4826-99FF-66CF017E7414}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCheckRegister", "AspNetCheckRegister\AspNetCheckRegister.csproj", "{F4184882-E648-432C-91A8-65BA77E7C5BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetMVCCheckRegister", "AspNetMVCCheckRegister\AspNetMVCCheckRegister.csproj", "{74F6F746-9BB4-4C85-A017-97F462530DEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{93028D0E-9FD9-4826-99FF-66CF017E7414}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93028D0E-9FD9-4826-99FF-66CF017E7414}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93028D0E-9FD9-4826-99FF-66CF017E7414}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4184882-E648-432C-91A8-65BA77E7C5BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4184882-E648-432C-91A8-65BA77E7C5BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4184882-E648-432C-91A8-65BA77E7C5BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4184882-E648-432C-91A8-65BA77E7C5BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74F6F746-9BB4-4C85-A017-97F462530DEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74F6F746-9BB4-4C85-A017-97F462530DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74F6F746-9BB4-4C85-A017-97F462530DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74F6F746-9BB4-4C85-A017-97F462530DEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
