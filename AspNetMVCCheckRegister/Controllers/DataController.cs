@@ -44,6 +44,7 @@ namespace AspNetMVCCheckRegister.Controllers
     // POST: api/Data
     public void Post([FromBody]string value)
     {
+
     }
 
     // PUT: api/Data/5

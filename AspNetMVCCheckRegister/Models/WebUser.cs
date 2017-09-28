@@ -8,14 +8,14 @@ using System.Web;
 
 namespace AspNetMVCCheckRegister.Models
 {
-  public class User
+  public class WebUser
   {
     private const string _xmlFileLocation = "RegisteredUsers.xml";
-    private CheckRegister.Models.User _user;
+    private User _user;
 
-    public User() {}
+    public WebUser() {}
 
-    public User(string username, string password)
+    public WebUser(string username, string password)
     {
       UserName = username;
       Password = password;

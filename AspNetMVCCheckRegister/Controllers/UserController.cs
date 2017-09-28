@@ -12,7 +12,7 @@ namespace AspNetMVCCheckRegister.Controllers
     [HttpGet]
     public ActionResult Login(string username, string password)
     {
-        return View(new User());
+        return View(new WebUser());
     }
       
     [HttpGet]
@@ -22,13 +22,13 @@ namespace AspNetMVCCheckRegister.Controllers
     }
 
     [HttpPost]
-    public ActionResult Login(User user)
+    public ActionResult Login(WebUser user)
     {
       if (ModelState.IsValid)
       {
         if (user.Exists)
         {
-          return RedirectToAction("Index", "Home", new User(user.UserName, user.Password));
+          return RedirectToAction("Index", "Home", new WebUser(user.UserName, user.Password));
         }
         else
         {
