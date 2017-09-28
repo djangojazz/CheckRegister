@@ -10,16 +10,12 @@ namespace AspNetMVCCheckRegister.Models
 {
   public class WebUser
   {
-    private const string _xmlFileLocation = "RegisteredUsers.xml";
-    private User _user;
-
     public WebUser() {}
 
     public WebUser(string username, string password)
     {
       UserName = username;
       Password = password;
-      _user = RegisteredUsers.Users.Single(x => x.UserName == username);
     }
 
     [Required, Display(Name = "User name")]

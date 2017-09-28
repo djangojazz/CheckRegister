@@ -2,6 +2,7 @@
 using CheckRegister.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -105,6 +106,7 @@ namespace CommandLineCheckRegister
 
         TransactionType type = (input == "1") ? TransactionType.Deposit : TransactionType.Withdrawal;
         _user.AddTransaction(type, valueNumber); 
+
         Console.WriteLine($"Accepted {type} for {valueNumber}");
         Console.WriteLine();
         DetermineAction();
@@ -118,7 +120,7 @@ namespace CommandLineCheckRegister
         _user.TransactionsWithTotals.ForEach(x =>
         {
           var typeText = (x.TransactionType == TransactionType.Deposit) ? $"{TransactionType.Deposit.ToString()}    " : TransactionType.Withdrawal.ToString();
-          sb.AppendLine($"\tId: {x.TransactionId}\tType: {typeText}\tAmount: {x.Amount}\tCreated: {x.Created.ToString("MM/dd/yyyy hh:mm:ss")}\tRunning Total: {x.RunningTotal}");
+          sb.AppendLine($"\tId: {x.TransactionId}\tType: {typeText}\tAmount: {x.Amount}\tCreated: {x.Created.ToString("MM/dd/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture)}\tRunning Total: {x.RunningTotal}");
         });
         sb.AppendLine();
         sb.AppendLine($"Your current Balance is: {_user.TransactionsWithTotals?.Last()?.RunningTotal ?? 0}");
@@ -130,7 +132,6 @@ namespace CommandLineCheckRegister
       else if (input == "4")
       {
         Console.WriteLine("Logging out, goodbye");
-        CreateFileOrAppendToIt();
         Console.ReadLine();
         Environment.Exit(0);
       }

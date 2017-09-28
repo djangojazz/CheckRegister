@@ -22,12 +22,12 @@ namespace CheckRegister.Models
       Amount = amount;
     }
 
-    public Transaction(TransactionType transactionType, double amount, int transactionId, double runningTotal)
+    public Transaction(Transaction transaction, int transactionId, double runningTotal)
     {
-      Created = DateTime.Now;
-      CreatedBy = WindowsIdentity.GetCurrent().Name;
-      TransactionType = transactionType;
-      Amount = amount;
+      Created = transaction.Created;
+      CreatedBy = transaction.CreatedBy;
+      TransactionType = transaction.TransactionType;
+      Amount = transaction.Amount;
       TransactionId = transactionId;
       RunningTotal = runningTotal;
     }

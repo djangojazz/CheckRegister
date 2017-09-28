@@ -44,19 +44,11 @@ namespace AspNetMVCCheckRegister.Controllers
     
     public IHttpActionResult Post([FromBody]WebUser value)
     {
+      var user = RegisteredUsers.GetCurrentUserIfTheyExist(_xmlFileLocation, value.UserName);
       var item = value;
       return Ok();
     }
-
-    // PUT: api/Data/5
-    public void Put(int id, [FromBody]string value)
-    {
-    }
-
-    // DELETE: api/Data/5
-    public void Delete(int id)
-    {
-    }
+    
 
     private static void CreateFileOrAppendToIt()
     {

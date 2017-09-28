@@ -32,7 +32,7 @@ namespace CheckRegister.Models
       {
         double runningTotal = 0;
         return Transactions
-          .Select((x, i) => new Transaction(x.TransactionType, x.Amount, i+1, runningTotal += (x.TransactionType == TransactionType.Deposit) ? x.Amount : -x.Amount))
+          .Select((x, i) => new Transaction(x, i+1, runningTotal += (x.TransactionType == TransactionType.Deposit) ? x.Amount : -x.Amount))
           .OrderBy(x => x.TransactionId)
           .ToList();
       }

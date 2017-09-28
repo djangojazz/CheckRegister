@@ -26,7 +26,7 @@ namespace AspNetMVCCheckRegister.Controllers
     {
       if (ModelState.IsValid)
       {
-        if (user.Exists)
+        if (user != null)
         {
           return RedirectToAction("Index", "Home", new WebUser(user.UserName, user.Password));
         }
