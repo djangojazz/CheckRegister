@@ -1,4 +1,5 @@
-﻿using CheckRegister;
+﻿using AspNetMVCCheckRegister.Models;
+using CheckRegister;
 using CheckRegister.Models;
 using System;
 using System.Collections.Generic;
@@ -40,11 +41,11 @@ namespace AspNetMVCCheckRegister.Controllers
       return Ok(user?.AuthenticateUser(password) ?? false);
     }
 
-
-    // POST: api/Data
-    public void Post([FromBody]string value)
+    
+    public IHttpActionResult Post([FromBody]WebUser value)
     {
-
+      var item = value;
+      return Ok();
     }
 
     // PUT: api/Data/5

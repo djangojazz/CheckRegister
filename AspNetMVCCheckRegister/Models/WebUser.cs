@@ -27,10 +27,8 @@ namespace AspNetMVCCheckRegister.Models
 
     [Required, DataType(DataType.Password), Display(Name = "Password")]
     public string Password { get; set; }
-    public bool Authenticated { get =>  RegisteredUsers.Users.SingleOrDefault(x => x.UserName == UserName)?.AuthenticateUser(Password) ?? false; }
-    public bool Exists { get => RegisteredUsers.Users.Exists(x => x.UserName == UserName); }
-    public List<Transaction> Transactions { get => _user?.Transactions; }
-
-    //private bool IsValid(string username, string password) => Authenticated = RegisteredUsers.Users.SingleOrDefault(x => x.UserName == username)?.AuthenticateUser(password) ?? false;
+    //public bool Authenticated { get =>  RegisteredUsers.Users.SingleOrDefault(x => x.UserName == UserName)?.AuthenticateUser(Password) ?? false; }
+    //public bool Exists { get => RegisteredUsers.Users.Exists(x => x.UserName == UserName); }
+    public List<WebTransaction> Transactions { get; set; }
   }
 }
