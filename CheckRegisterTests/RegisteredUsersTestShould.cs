@@ -14,7 +14,6 @@ namespace CheckRegisterTests
    *  SECURITY = Multiple Users could see other users, a database and pattern would fix this.
    *  DESTRUCTORS AND DISPOSING = Probably overkill for an example but when things get larger and resources may become unmanaged with third parties could be an issue.
    *  AMENDING AN OLDER TRANSACTION = Ability to go back when doing a reconciliation and alter an existing transaction
-   *  CHECK A BALANCE ON AN EARLIER DATE = See how your trend of spending was working by seeing where you started versus where you are at now.
    *  MAYBE NOT USE STATIC CLASSES = For mockability you would probably interface more things and use MOQ or similar for unit test mocks.
    *  IS THE APP HOSTED IN MULTIPLE TIMEZONES? = Store dates in UTC rather than local timezone and use client to convert
    *  CONCURRENCY = Example I created assumes a single user on a local machine.  You may want to make a hosted app or web page that many people could hit at the same time.  
@@ -32,8 +31,8 @@ namespace CheckRegisterTests
     [TestInitialize]
     public void TestInitialize()
     {
-      _user = new User("Test", "password") { Transactions = new List<Transaction> { new Transaction(TransactionType.Credit, 100), new Transaction(TransactionType.Debit, 50) } };
-      _user2 = new User("Test2", "password2") { Transactions = new List<Transaction> { new Transaction(TransactionType.Credit, 200), new Transaction(TransactionType.Debit, 100) } };
+      _user = new User("Test", "password") { Transactions = new List<Transaction> { new Transaction(TransactionType.Deposit, 100), new Transaction(TransactionType.Withdrawal, 50) } };
+      _user2 = new User("Test2", "password2") { Transactions = new List<Transaction> { new Transaction(TransactionType.Deposit, 200), new Transaction(TransactionType.Withdrawal, 100) } };
     }
 
     [TestMethod]
@@ -70,12 +69,12 @@ namespace CheckRegisterTests
     public void BeAbleToAddNewEntriesAndDetermineBalance()
     {
       //Assign
-      _user.AddTransaction(TransactionType.Debit, 20);
+      _user.AddTransaction(TransactionType.Withdrawal, 20);
 
       //Act
-      var balance1 = _user.GetCurrentBalance();
-      _user.AddTransaction(TransactionType.Debit, 10);
-      var balance2 = _user.GetCurrentBalance();
+      var balance1 = _user.TransactionsWithTotals?.Last()?.RunningTotal ?? 0;
+      _user.AddTransaction(TransactionType.Withdrawal, 10);
+      var balance2 = _user.TransactionsWithTotals?.Last()?.RunningTotal ?? 0;
 
       //Assert
       Assert.AreEqual(30, balance1, "Balance Should be 30");

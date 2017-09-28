@@ -21,11 +21,24 @@ namespace CheckRegister.Models
     public string Password { get; set; }
     [XmlIgnore]
     public bool IsAuthenticated { get; set; }
-    public List<Transaction> Transactions { get; set; } = new List<Transaction>();
     
+    
+    public List<Transaction> Transactions { get; set; } = new List<Transaction>();
+
+    [XmlIgnore]
+    public List<Transaction> TransactionsWithTotals
+    {
+      get
+      {
+        double runningTotal = 0;
+        return Transactions
+          .Select((x, i) => new Transaction(x.TransactionType, x.Amount, i+1, runningTotal += (x.TransactionType == TransactionType.Deposit) ? x.Amount : -x.Amount))
+          .OrderBy(x => x.TransactionId)
+          .ToList();
+      }
+    }
+
     public void AddTransaction(TransactionType type, double amount) => Transactions.Add(new Transaction(type, amount));
     public bool AuthenticateUser(string password) => IsAuthenticated = (Password == password);
-    public double GetTotalOfTransactionType(TransactionType type) => (!Transactions?.Any(x => x.TransactionType == type) ?? true) ? 0 : Transactions.Where(x => x.TransactionType == type)?.Select(x => x.Amount)?.Sum() ?? 0;
-    public double GetCurrentBalance() => GetTotalOfTransactionType(TransactionType.Credit) - GetTotalOfTransactionType(TransactionType.Debit);
   }
 }

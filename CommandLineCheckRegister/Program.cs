@@ -78,13 +78,13 @@ namespace CommandLineCheckRegister
 
     private static void DetermineAction()
     {
-      Console.WriteLine(CreateHeader($"What would you like to do.", "1= Make a Deposit  ", "2= Make a Withdrawal", "3= Check balance   ", "4= See transactions", "5= Logout and Exit  "));
+      Console.WriteLine(CreateHeader($"What would you like to do.", "1 = Make a Deposit  ", "2 = Make a Withdrawal", "3 = Transactions and Balance   ", "4 = Logout and Exit  "));
 
-      var acceptable = new List<string> { "1", "2", "3", "4", "5" };
+      var acceptable = new List<string> { "1", "2", "3", "4" };
       var input = Console.ReadLine();
       if(!acceptable.Contains(input))
       {
-        Console.WriteLine("You chose an invalid option, please select either 1 Deposit, 2 Withdrawal, 3 Balance, 4 Transactions, or 5 Logout Exit");
+        Console.WriteLine("You chose an invalid option, please select either 1 Deposit, 2 Withdrawal, 3 Transactions, or 4 Logout Exit");
         Console.WriteLine();
         DetermineAction();
       }
@@ -103,28 +103,31 @@ namespace CommandLineCheckRegister
           DetermineAction();
         }
 
-        TransactionType type = (input == "1") ? TransactionType.Credit : TransactionType.Debit;
+        TransactionType type = (input == "1") ? TransactionType.Deposit : TransactionType.Withdrawal;
         _user.AddTransaction(type, valueNumber); 
-        var textType = (type == TransactionType.Credit) ? "Deposit" : "Withdrawal";
-        Console.WriteLine($"Accepted {textType} for {valueNumber}");
+        Console.WriteLine($"Accepted {type} for {valueNumber}");
         Console.WriteLine();
         DetermineAction();
       }
-      else if(input == "3")
-      {
-        Console.WriteLine($"Your current balance is: {_user.GetCurrentBalance()}");
-        Console.WriteLine();
-        DetermineAction();
-      }
-      else if (input == "4")
+      else if (input == "3")
       {
         StringBuilder sb = new StringBuilder("Your current Transactions are");
-        _user.Transactions.ForEach(x => sb.Append($"{Environment.NewLine}\tAmount: {x.Amount} Created: {x.Created.ToString("MM/dd/yyyy hh:mm:ss")}"));
+        sb.AppendLine();
+        sb.AppendLine();
+       
+        _user.TransactionsWithTotals.ForEach(x =>
+        {
+          var typeText = (x.TransactionType == TransactionType.Deposit) ? $"{TransactionType.Deposit.ToString()}    " : TransactionType.Withdrawal.ToString();
+          sb.AppendLine($"\tId: {x.TransactionId}\tType: {typeText}\tAmount: {x.Amount}\tCreated: {x.Created.ToString("MM/dd/yyyy hh:mm:ss")}\tRunning Total: {x.RunningTotal}");
+        });
+        sb.AppendLine();
+        sb.AppendLine($"Your current Balance is: {_user.TransactionsWithTotals?.Last()?.RunningTotal ?? 0}");
+
         Console.WriteLine(sb.ToString());
         Console.WriteLine();
         DetermineAction();
       }
-      else if (input == "5")
+      else if (input == "4")
       {
         Console.WriteLine("Logging out, goodbye");
         CreateFileOrAppendToIt();

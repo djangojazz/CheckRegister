@@ -21,7 +21,19 @@ namespace CheckRegister.Models
       TransactionType = transactionType;
       Amount = amount;
     }
-    
+
+    public Transaction(TransactionType transactionType, double amount, int transactionId, double runningTotal)
+    {
+      Created = DateTime.Now;
+      CreatedBy = WindowsIdentity.GetCurrent().Name;
+      TransactionType = transactionType;
+      Amount = amount;
+      TransactionId = transactionId;
+      RunningTotal = runningTotal;
+    }
+
+    [XmlIgnore]
+    public int TransactionId { get; set; }
     [XmlAttribute]
     public TransactionType TransactionType { get; set; }
     [XmlAttribute]
@@ -30,5 +42,7 @@ namespace CheckRegister.Models
     public DateTime Created { get; set; }
     [XmlAttribute]
     public string CreatedBy { get; set; }
+    [XmlAttribute]
+    public double RunningTotal { get; set; }
   }
 }

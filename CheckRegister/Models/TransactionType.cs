@@ -5,7 +5,7 @@ namespace CheckRegister.Models
   [Serializable]
   public enum TransactionType
   {
-    Credit = 0,
-    Debit = 1
+    Deposit = 0,
+    Withdrawal = 1
   }
 }
