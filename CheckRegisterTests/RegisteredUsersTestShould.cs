@@ -53,16 +53,19 @@ namespace CheckRegisterTests
       
       //Show that users can be remembered from xml store.
       var user1 = _xmlFileLocation.GetCurrentUserIfTheyExist("Test");
-      user1.AuthenticateUser("password");
-      var user2 = _xmlFileLocation.GetCurrentUserIfTheyExist("Testt");
+      var authenticated = user1.AuthenticateUser("password");
+      var user2 = _xmlFileLocation.GetCurrentUserIfTheyExist("Test2");
+      var authenticated2 = user2.AuthenticateUser("passwordWrong");
+      var userDoesntExist = _xmlFileLocation.GetCurrentUserIfTheyExist("Testt");
+      
       File.Delete(_xmlFileLocation);
 
       //Assert
       Assert.IsNotNull(user1, "Expected to be not null");
-      Assert.IsNull(user2, "Expected to be null");
+      Assert.IsNull(userDoesntExist, "Expected to be null");
       Assert.AreEqual(2, RegisteredUsers.Users.Count, "Should be two users");
-      Assert.AreEqual(true, RegisteredUsers.Users[0].IsAuthenticated, "First User should be authenticated");
-      Assert.AreEqual(false, RegisteredUsers.Users[1].IsAuthenticated, "Second User should be unAuthenticated");
+      Assert.AreEqual(true, authenticated, "First User should be authenticated");
+      Assert.AreEqual(false, authenticated2, "Second User should be unAuthenticated");
     }
     
     [TestMethod]

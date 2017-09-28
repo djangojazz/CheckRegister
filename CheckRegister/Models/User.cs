@@ -19,8 +19,8 @@ namespace CheckRegister.Models
     public string UserName { get; set; }
     [XmlAttribute]
     public string Password { get; set; }
-    [XmlIgnore]
-    public bool IsAuthenticated { get; set; }
+    //[XmlIgnore]
+    //public bool IsAuthenticated { get; set; }
     
     
     public List<Transaction> Transactions { get; set; } = new List<Transaction>();
@@ -39,6 +39,6 @@ namespace CheckRegister.Models
     }
 
     public void AddTransaction(TransactionType type, double amount) => Transactions.Add(new Transaction(type, amount));
-    public bool AuthenticateUser(string password) => IsAuthenticated = (Password == password);
+    public bool AuthenticateUser(string password) => (Password == password);
   }
 }
