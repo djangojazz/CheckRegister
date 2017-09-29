@@ -1,24 +1,25 @@
 ﻿using AspNetMVCCheckRegister.Models;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace AspNetMVCCheckRegister.Controllers
 {
   public class HomeController : Controller
   {
-    public ActionResult Index(WebUser currentUser)
+    public ActionResult Transaction(WebUser user)
     {
-      if (currentUser.UserName != null) { return View(currentUser); }
-      return RedirectToAction("Login", "User");
+      return View(user);
     }
 
-    public ActionResult Transaction(WebUser currentUser)
+    public ActionResult Transactions(WebUser user)
     {
-      return View(currentUser);
-    }
-
-    public ActionResult Transactions(WebUser currentUser)
-    {
-      return View(currentUser);
+      using (var data = new DataController())
+      {
+        user.Transactions = data.Get(user.UserName);
+        user.Balance = user.Transactions?.OrderByDescending(x => x.Created)?.First()?.Amount ?? 0;
+      }
+      
+      return View(user);
     }
   }
 }

@@ -8,7 +8,7 @@
 {
 
   @Html.ValidationSummary(true, "Login failed, please try again.");
-  <div class="col-lg-offset-10">
+  <div>
     <h2>Welcome @Model.UserName what would you like your password to be?</h2>
     <div class="editor-label">
       @Html.LabelFor(u => u.Password)
@@ -19,6 +19,6 @@
     </div>
     <br />
 
-    <input type="submit" value="Create New User And proceed back to login" class="btn btn-success" />
+    <input type="submit" value="Create User And Proceed To Login" class="btn btn-success" />
   </div>
   }

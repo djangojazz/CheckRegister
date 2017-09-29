@@ -5,5 +5,29 @@
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Transactions</h1>
-I have transactions!
+<h1>Transactions and Summary</h1>
+
+<table>
+  <thead>
+    <tr>
+      <td>TransactionId</td>
+      <td>TransactionType</td>
+      <td>Amount</td>
+      <td>Created</td>
+      <td>RunningTotal</td>
+    </tr>
+  </thead>
+
+  @foreach (var tran in Model.Transactions)
+  {
+    <tr>
+      <td>@tran.TransactionId</td>
+      <td>@tran.TransactionType</td>
+      <td>@tran.Amount</td>
+      <td>@tran.Created</td>
+      <td>@tran.RunningTotal</td>
+    </tr>
+  }
+  <hr />
+  <h2>Your current Balance is @Model.Balance</h2>
+</table>

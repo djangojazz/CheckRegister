@@ -23,7 +23,7 @@ namespace AspNetMVCCheckRegister.Controllers
       var user = RegisteredUsers.GetCurrentUserIfTheyExist(_xmlFileLocation, userName);
       if (user == null) { return null; }
 
-      return user?.Transactions.ToList();
+      return user?.TransactionsWithTotals;
         //.Select(x => new { TransactionType = x.TransactionType, Amount = x.Amount, Created = x.Created });
     }
     
@@ -46,7 +46,7 @@ namespace AspNetMVCCheckRegister.Controllers
       var user = RegisteredUsers.GetCurrentUserIfTheyExist(_xmlFileLocation, value.UserName);
       if (user == null) { return BadRequest("No data exists for this user and they may not be updated"); }
 
-      value.Transactions.ForEach(x => user.Transactions.Add(new Transaction((TransactionType)x.TransactionTypeId, x.Amount)));
+      value.TransactionRequests.ForEach(x => user.Transactions.Add(new Transaction((TransactionType)x.TransactionTypeId, x.Amount)));
       CreateFileOrAppendToIt();
       return Ok();
     }

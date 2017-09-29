@@ -24,6 +24,8 @@ namespace AspNetMVCCheckRegister.Models
     [Required, DataType(DataType.Password), Display(Name = "Password")]
     public string Password { get; set; }
     public bool Authenticated { get; set; }
-    public List<WebTransaction> Transactions { get; set; }
+    public List<WebTransaction> TransactionRequests { get; set; } = new List<WebTransaction>();
+    public List<Transaction> Transactions { get; set; } = new List<Transaction>();
+    public double Balance { get; set; }
   }
 }

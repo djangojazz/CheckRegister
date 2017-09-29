@@ -10,25 +10,27 @@ namespace AspNetMVCCheckRegister.Controllers
 {
   public class UserController : Controller
   {
-    DataController _dataController = new DataController();
-
     [HttpGet]
-    public ActionResult Login(string userName, string password)
-    {
-      return View(new WebUser(userName, password));
-    }
+    public ActionResult Login(string userName, string password) => View(new WebUser(userName, password));
 
     [HttpPost]
     public ActionResult Login(WebUser user)
     {
       if (ModelState.IsValid)
       {
-        var exists = _dataController.Exists(user.UserName);
-        if (!exists) { return RedirectToAction("NewUser", "User", new { userName = user.UserName }); }
+        using (var data = new DataController())
+        {
+          var exists = data.Exists(user.UserName);
+          if (!exists) { return RedirectToAction("NewUser", "User", new { userName = user.UserName }); }
+          
+          user.Authenticated = data.Authenticate(user.UserName, user.Password);
+        }
+        
 
-        user.Authenticated = _dataController.Authenticate(user.UserName, user.Password);
-
-        if (user.Authenticated) { return RedirectToAction("Transactions", "Home", user); }
+        if (user.Authenticated)
+        {
+          return RedirectToAction("Transactions", "Home", user);
+        }
         else { ModelState.AddModelError("", "UserName or Password is incorrect"); }
       }
 
@@ -37,10 +39,7 @@ namespace AspNetMVCCheckRegister.Controllers
 
     #region NewUser
     [HttpGet]
-    public ActionResult NewUser(string userName)
-    {
-      return View(new WebUser(userName, string.Empty));
-    }
+    public ActionResult NewUser(string userName) => View(new WebUser(userName, string.Empty));
 
     [HttpPost]
     public ActionResult NewUser(WebUser user)
@@ -49,7 +48,7 @@ namespace AspNetMVCCheckRegister.Controllers
       {
         if (user.Password != null)
         {
-          _dataController.CreateUser(user);
+          using (var data = new DataController()) { data.CreateUser(user); }
           return RedirectToAction("Login", "User", new { userName = user.UserName, password = user.Password });
         }
         else
@@ -62,9 +61,6 @@ namespace AspNetMVCCheckRegister.Controllers
     } 
     #endregion
 
-    public ActionResult Logout()
-    {
-      return RedirectToAction("Login", "User", null);
-    }
+    public ActionResult Logout() => RedirectToAction("Login", "User", null);
   }
 }
