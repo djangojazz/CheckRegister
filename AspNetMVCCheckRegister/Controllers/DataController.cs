@@ -41,12 +41,12 @@ namespace AspNetMVCCheckRegister.Controllers
       return user?.AuthenticateUser(password) ?? false;
     }
     
-    public IHttpActionResult Post([FromBody]WebUser value)
+    public IHttpActionResult Post([FromBody]WebTransaction value)
     {
       var user = RegisteredUsers.GetCurrentUserIfTheyExist(_xmlFileLocation, value.UserName);
       if (user == null) { return BadRequest("No data exists for this user and they may not be updated"); }
 
-      user.Transactions.Add(new Transaction((TransactionType)value.TransactionRequest.TransactionTypeId, value.TransactionRequest.Amount));
+      user.Transactions.Add(new Transaction(value.SelectedTransactionType, value.Amount));
       CreateFileOrAppendToIt();
       return Ok();
     }

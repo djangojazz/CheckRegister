@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CheckRegister.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,7 +10,9 @@ namespace AspNetMVCCheckRegister.Models
   public class WebTransaction
   {
     [Required]
-    public int TransactionTypeId { get; set; }
+    public string UserName { get; set; }
+    [Required]
+    public TransactionType SelectedTransactionType { get; set; }
     [Required]
     public double Amount { get; set; }
   }

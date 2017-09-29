@@ -19,13 +19,13 @@ namespace AspNetMVCCheckRegister.Controllers
     }
 
     [HttpGet]
-    public ActionResult Transaction(WebUser user, bool empty = false)
+    public ActionResult Transaction(WebUser user)
     {
       return View(user);
     }
 
     [HttpPost]
-    public ActionResult Transaction(WebUser user)
+    public ActionResult Transaction(WebTransaction user)
     {
       var x = user;
 
