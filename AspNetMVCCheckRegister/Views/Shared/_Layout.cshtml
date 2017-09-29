@@ -33,13 +33,13 @@
   </div>
 
   <div class="container body-content">
-    @RenderBody()
     @if (Model.Authenticated)
     {
-      <div class="footer navbar-fixed-bottom navbar-inverse">
+      <div class="page-header">
         <H3>@Html.Encode(Model.UserName) is currently logged in</H3>
       </div>
     }
+    @RenderBody()
   </div>
 
   <script src="~/Scripts/jquery-1.10.2.min.js"></script>

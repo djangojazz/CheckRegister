@@ -10,8 +10,8 @@ namespace CheckRegisterTests
   /*
    * THOUGHTS ON IMPROVEMENTS BUT WOULD TAKE MORE CODING
    *  PERMANENT DATA STORE = Database, Blob storage in cloud, etc.
-   *  ENCRYPTION = Users should have passwords encrypted with basic encryption most likely.
-   *  SECURITY = Multiple Users could see other users, a database and pattern would fix this.
+   *  ENCRYPTION = Users should have passwords encrypted with basic encryption most likely, when at rest.
+   *  SECURITY = Multiple Users could see other users, a database and security wall to it would fix this.
    *  DESTRUCTORS AND DISPOSING = Probably overkill for an example but when things get larger and resources may become unmanaged with third parties could be an issue.
    *  AMENDING AN OLDER TRANSACTION = Ability to go back when doing a reconciliation and alter an existing transaction
    *  MAYBE NOT USE STATIC CLASSES = For mockability you would probably interface more things and use MOQ or similar for unit test mocks.
