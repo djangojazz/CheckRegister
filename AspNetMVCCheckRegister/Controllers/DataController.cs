@@ -46,7 +46,7 @@ namespace AspNetMVCCheckRegister.Controllers
       var user = RegisteredUsers.GetCurrentUserIfTheyExist(_xmlFileLocation, value.UserName);
       if (user == null) { return BadRequest("No data exists for this user and they may not be updated"); }
 
-      value.TransactionRequests.ForEach(x => user.Transactions.Add(new Transaction((TransactionType)x.TransactionTypeId, x.Amount)));
+      user.Transactions.Add(new Transaction((TransactionType)value.TransactionRequest.TransactionTypeId, value.TransactionRequest.Amount));
       CreateFileOrAppendToIt();
       return Ok();
     }
