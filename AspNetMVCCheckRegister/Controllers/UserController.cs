@@ -9,16 +9,18 @@ namespace AspNetMVCCheckRegister.Controllers
 {
   public class UserController : Controller
   {
+    DataController _dataController = new DataController();
+
     [HttpGet]
-    public ActionResult Login(string username, string password)
+    public ActionResult Login(string userName, bool ignore = false)
     {
-        return View(new WebUser());
-    }
-      
-    [HttpGet]
-    public ActionResult NewUser()
-    {
-      return View();
+      if (ignore) { return View(new WebUser()); }
+
+      var exists = _dataController.Exists(userName);
+      if (!exists) { return RedirectToAction("NewUser", "User", new WebUser(userName, "a")); }
+
+
+      return View(new WebUser());
     }
 
     [HttpPost]
@@ -26,6 +28,7 @@ namespace AspNetMVCCheckRegister.Controllers
     {
       if (ModelState.IsValid)
       {
+
         if (user != null)
         {
           return RedirectToAction("Index", "Home", new WebUser(user.UserName, user.Password));
@@ -38,10 +41,33 @@ namespace AspNetMVCCheckRegister.Controllers
       return View(user);
     }
 
+    [HttpGet]
+    public ActionResult NewUser(string userName)
+    {
+      return View();
+    }
+
+    [HttpPost]
+    public ActionResult NewUser(WebUser user)
+    {
+      if (ModelState.IsValid)
+      {
+        if (user != null)
+        {
+          return RedirectToAction("Login", "User", user.UserName);
+        }
+        else
+        {
+          ModelState.AddModelError("", "Password is missing and required");
+        }
+      }
+
+      return View(user);
+    }
+
     public ActionResult Logout()
     {
-      //FormsAuthentication.SignOut();
-      return RedirectToAction("Index", "Home");
+      return RedirectToAction("Index", "Home", null);
     }
   }
 }

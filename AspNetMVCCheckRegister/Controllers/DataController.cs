@@ -27,10 +27,10 @@ namespace AspNetMVCCheckRegister.Controllers
     }
     
     [HttpGet, Route("api/checkRegister/exists/{userName}")]
-    public IHttpActionResult Exists(string userName)
+    public bool Exists(string userName)
     {
       var user = RegisteredUsers.GetCurrentUserIfTheyExist(_xmlFileLocation, userName);
-      return Ok(user != null);
+      return user != null;
     }
 
     [HttpGet, Route("api/checkRegister/authenticate/{userName}/{password}")]
