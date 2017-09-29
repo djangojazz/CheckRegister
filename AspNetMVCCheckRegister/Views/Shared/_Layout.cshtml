@@ -10,7 +10,7 @@
   <script src="~/Scripts/modernizr-2.6.2.js"></script>
 </head>
 <body>
-  <div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar navbar-fixed-top">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -18,34 +18,35 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        @if (Model.Authenticated) { <H3>@Html.Encode(Model.UserName)</H3> }
-                <div class="navbar-collapse collapse">
-                  <ul class="nav navbar-nav">
-                    @if (Model.Authenticated)
-                    {
-                    <li>@Html.ActionLink("Existing Transactions", "Transactions", "Home", @Model, null)</li>
-                    <li>@Html.ActionLink("Create a Transaction", "Transaction", "Home", @Model, null)</li>
-                    <li>@Html.ActionLink("Sign Out", "Logout", "User", @Model, null)</li>
-                    }
-                    else
-                    {
-                      <li>@Html.ActionLink("Sign In", "Login", "User", @Model, null)</li>
-                    }
-                  </ul>
-                </div>
-        </div>
+      </div>
         <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav"></ul>
-        </div>
+          <ul class="nav navbar-nav">
+            @if (Model.Authenticated)
+            {
+              <li>@Html.ActionLink("Existing Transactions", "Transactions", "Home", @Model, null)</li>
+              <li>@Html.ActionLink("Create a Transaction", "Transaction", "Home", @Model, null)</li>
+                    <li>@Html.ActionLink("Sign Out", "Logout", "User", @Model, null)</li>
+            }
+            else
+            {
+              <li>@Html.ActionLink("Sign In", "Login", "User", @Model, null)</li>
+            }
+          </ul>
       </div>
     </div>
+  </div>
 
-    <div class="container body-content">
-      <h2>Shared</h2>
-      @RenderBody()
-    </div>
+  <div class="container body-content col-lg-offset-10">
+    @RenderBody()
+    @if (Model.Authenticated)
+    {
+      <div class="footer navbar-fixed-bottom navbar-inverse">
+        <H3>@Html.Encode(Model.UserName) is currently logged in</H3>
+      </div>
+    }
+  </div>
 
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-  </body>
+  <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+  <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
 </html>
