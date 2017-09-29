@@ -40,7 +40,6 @@ namespace AspNetMVCCheckRegister.Controllers
       var user = RegisteredUsers.GetCurrentUserIfTheyExist(_xmlFileLocation, userName);
       return user?.AuthenticateUser(password) ?? false;
     }
-
     
     public IHttpActionResult Post([FromBody]WebUser value)
     {
@@ -58,7 +57,7 @@ namespace AspNetMVCCheckRegister.Controllers
       var user = RegisteredUsers.GetCurrentUserIfTheyExist(_xmlFileLocation, value.UserName);
       if (user != null) { return BadRequest("User already exists could not update"); }
 
-      value.Transactions.ForEach(x => user.Transactions.Add(new Transaction((TransactionType)x.TransactionTypeId, x.Amount)));
+      RegisteredUsers.Adduser(value.UserName, value.Password);
       CreateFileOrAppendToIt();
       return Ok();
     }

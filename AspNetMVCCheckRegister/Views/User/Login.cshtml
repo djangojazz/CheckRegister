@@ -25,32 +25,6 @@
       @Html.ValidationMessageFor(u => u.Password)
     </div>
     <br />
-
-    @*@if (Model.Exists == true)
-    {
-      <input type="submit" value="Log In" class="btn btn-info" />
-    }
-    else
-    {
-      <input type="submit" value="Create New User" class="btn btn-success" />
-    }*@
-
     <input type="submit" value="Create New User/Login" class="btn btn-success" />
-
-    @*<script src="~/Scripts/loginSite.js"></script>
-
-    <script type="text/javascript">
-      function userNameChanged() {
-        var userNameText = $('#userName').val();
-        var passwordText = $('#password').val();
-
-        $.ajax({
-          url: '@Url.Action("Login", "User")',
-          data: { "username": userNameText, "password": passwordText },
-          success: function(data){},
-          error:function (xhr, ajaxOptions, thrownError){ alert(xhr.responseText); }
-          });
-        }
-    </script>*@
   </div>
 }

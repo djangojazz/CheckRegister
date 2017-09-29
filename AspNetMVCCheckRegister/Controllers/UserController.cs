@@ -48,8 +48,9 @@ namespace AspNetMVCCheckRegister.Controllers
     {
       if (ModelState.IsValid)
       {
-        if (user != null)
+        if (user.Password != null)
         {
+          _dataController.CreateUser(user);
           return RedirectToAction("Login", "User", new { userName = user.UserName, password = user.Password });
         }
         else
