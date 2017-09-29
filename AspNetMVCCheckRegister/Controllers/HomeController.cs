@@ -13,8 +13,7 @@ namespace AspNetMVCCheckRegister.Controllers
 
     public ActionResult Transaction(WebUser currentUser)
     {
-      if (currentUser.UserName != null) { return View(); }
-      return RedirectToAction("Login", "User");
+      return View(currentUser);
     }
   }
 }
