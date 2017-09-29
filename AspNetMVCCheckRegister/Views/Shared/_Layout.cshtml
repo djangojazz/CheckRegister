@@ -23,13 +23,13 @@
                   <ul class="nav navbar-nav">
                     @if (Model.Authenticated)
                     {
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Create a Transaction", "Transaction", "Home")</li>
-                    <li>@Html.ActionLink("Sign Out", "Logout", "User")</li>
+                    <li>@Html.ActionLink("Existing Transactions", "Transactions", "Home", @Model, null)</li>
+                    <li>@Html.ActionLink("Create a Transaction", "Transaction", "Home", @Model, null)</li>
+                    <li>@Html.ActionLink("Sign Out", "Logout", "User", @Model, null)</li>
                     }
                     else
                     {
-                      <li>@Html.ActionLink("Sign In", "Login", "User")</li>
+                      <li>@Html.ActionLink("Sign In", "Login", "User", @Model, null)</li>
                     }
                   </ul>
                 </div>

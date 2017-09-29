@@ -15,5 +15,10 @@ namespace AspNetMVCCheckRegister.Controllers
     {
       return View(currentUser);
     }
+
+    public ActionResult Transactions(WebUser currentUser)
+    {
+      return View(currentUser);
+    }
   }
 }

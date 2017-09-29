@@ -28,7 +28,7 @@ namespace AspNetMVCCheckRegister.Controllers
 
         user.Authenticated = _dataController.Authenticate(user.UserName, user.Password);
 
-        if (user.Authenticated) { return RedirectToAction("Index", "Home", user); }
+        if (user.Authenticated) { return RedirectToAction("Transactions", "Home", user); }
         else { ModelState.AddModelError("", "UserName or Password is incorrect"); }
       }
 
@@ -64,7 +64,7 @@ namespace AspNetMVCCheckRegister.Controllers
 
     public ActionResult Logout()
     {
-      return RedirectToAction("Index", "Home", null);
+      return RedirectToAction("Login", "User", null);
     }
   }
 }
