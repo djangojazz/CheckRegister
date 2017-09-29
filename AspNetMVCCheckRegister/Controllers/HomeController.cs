@@ -8,7 +8,8 @@ namespace AspNetMVCCheckRegister.Controllers
     public ActionResult Index(WebUser currentUser)
     {
       if (currentUser.UserName != null) { return View(); }
-      return RedirectToAction("Login", "User", new { userName = string.Empty, ignore = true });
+      return RedirectToAction("NewUser", "User", new { userName = string.Empty, ignore = true });
+      //RedirectToAction("Login", "User", new { userName = string.Empty, ignore = true });
     }
   }
 }

@@ -44,7 +44,7 @@ namespace AspNetMVCCheckRegister.Controllers
     [HttpGet]
     public ActionResult NewUser(string userName)
     {
-      return View();
+      return View(new WebUser());
     }
 
     [HttpPost]
