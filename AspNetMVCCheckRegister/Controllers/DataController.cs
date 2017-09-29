@@ -18,12 +18,13 @@ namespace AspNetMVCCheckRegister.Controllers
   {
     private static string _xmlFileLocation = HttpContext.Current.Server.MapPath("~/App_Data/RegisteredUsers.xml");
     
-    public IHttpActionResult Get(string userName)
+    public List<Transaction> Get(string userName)
     {
       var user = RegisteredUsers.GetCurrentUserIfTheyExist(_xmlFileLocation, userName);
-      if (user == null) { return BadRequest("No data exists for this user"); }
+      if (user == null) { return null; }
 
-      return Ok(user?.Transactions.Select(x => new { TransactionType = x.TransactionType, Amount = x.Amount, Created = x.Created }));
+      return user?.Transactions.ToList();
+        //.Select(x => new { TransactionType = x.TransactionType, Amount = x.Amount, Created = x.Created });
     }
     
     [HttpGet, Route("api/checkRegister/exists/{userName}")]
@@ -34,10 +35,10 @@ namespace AspNetMVCCheckRegister.Controllers
     }
 
     [HttpGet, Route("api/checkRegister/authenticate/{userName}/{password}")]
-    public IHttpActionResult Authenticate(string userName, string password)
+    public bool Authenticate(string userName, string password)
     {
       var user = RegisteredUsers.GetCurrentUserIfTheyExist(_xmlFileLocation, userName);
-      return Ok(user?.AuthenticateUser(password) ?? false);
+      return user?.AuthenticateUser(password) ?? false;
     }
 
     
@@ -50,7 +51,18 @@ namespace AspNetMVCCheckRegister.Controllers
       CreateFileOrAppendToIt();
       return Ok();
     }
-    
+
+    [HttpGet, Route("api/checkRegister/createUser/{userName}/{password}")]
+    public IHttpActionResult CreateUser([FromBody]WebUser value)
+    {
+      var user = RegisteredUsers.GetCurrentUserIfTheyExist(_xmlFileLocation, value.UserName);
+      if (user != null) { return BadRequest("User already exists could not update"); }
+
+      value.Transactions.ForEach(x => user.Transactions.Add(new Transaction((TransactionType)x.TransactionTypeId, x.Amount)));
+      CreateFileOrAppendToIt();
+      return Ok();
+    }
+
 
     private static void CreateFileOrAppendToIt()
     {

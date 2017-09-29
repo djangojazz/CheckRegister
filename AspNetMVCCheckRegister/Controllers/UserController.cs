@@ -12,15 +12,9 @@ namespace AspNetMVCCheckRegister.Controllers
     DataController _dataController = new DataController();
 
     [HttpGet]
-    public ActionResult Login(string userName, bool ignore = false)
+    public ActionResult Login(string userName, string password)
     {
-      if (ignore) { return View(new WebUser()); }
-
-      var exists = _dataController.Exists(userName);
-      if (!exists) { return RedirectToAction("NewUser", "User", new WebUser(userName, "a")); }
-
-
-      return View(new WebUser());
+      return View(new WebUser(userName, password));
     }
 
     [HttpPost]
@@ -28,6 +22,8 @@ namespace AspNetMVCCheckRegister.Controllers
     {
       if (ModelState.IsValid)
       {
+        var exists = _dataController.Exists(user.UserName);
+        if (!exists) { return RedirectToAction("NewUser", "User", new { userName = user.UserName }); }
 
         if (user != null)
         {
@@ -44,7 +40,7 @@ namespace AspNetMVCCheckRegister.Controllers
     [HttpGet]
     public ActionResult NewUser(string userName)
     {
-      return View(new WebUser());
+      return View(new WebUser(userName, string.Empty));
     }
 
     [HttpPost]
@@ -54,7 +50,7 @@ namespace AspNetMVCCheckRegister.Controllers
       {
         if (user != null)
         {
-          return RedirectToAction("Login", "User", user.UserName);
+          return RedirectToAction("Login", "User", new { userName = user.UserName, password = user.Password });
         }
         else
         {

@@ -1,7 +1,24 @@
 ﻿@model AspNetMVCCheckRegister.Models.WebUser
 @{
-    ViewBag.Title = "NewUser";
+  ViewBag.Title = "NewUser";
+  Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>New User created</h2>
+@using (Html.BeginForm())
+{
 
+  @Html.ValidationSummary(true, "Login failed, please try again.");
+  <div class="col-lg-offset-10">
+    <h2>Welcome @Model.UserName what would you like your password to be?</h2>
+    <div class="editor-label">
+      @Html.LabelFor(u => u.Password)
+    </div>
+    <div class="editor-field">
+      @Html.PasswordFor(u => u.Password)
+      @Html.ValidationMessageFor(u => u.Password)
+    </div>
+    <br />
+
+    <input type="submit" value="Create New User" class="btn btn-success" />
+  </div>
+  }

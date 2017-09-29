@@ -35,9 +35,9 @@
       <input type="submit" value="Create New User" class="btn btn-success" />
     }*@
 
-    <input type="submit" value="Create New User" class="btn btn-success" />
+    <input type="submit" value="Create New User/Login" class="btn btn-success" />
 
-    <script src="~/Scripts/loginSite.js"></script>
+    @*<script src="~/Scripts/loginSite.js"></script>
 
     <script type="text/javascript">
       function userNameChanged() {
@@ -47,14 +47,10 @@
         $.ajax({
           url: '@Url.Action("Login", "User")',
           data: { "username": userNameText, "password": passwordText },
-          success: function(data){
-            @*var exists = '@Model.Exists';
-
-            alert(exists);*@
-          },
+          success: function(data){},
           error:function (xhr, ajaxOptions, thrownError){ alert(xhr.responseText); }
           });
         }
-    </script>
+    </script>*@
   </div>
 }
