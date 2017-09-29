@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model AspNetMVCCheckRegister.Models.WebUser
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -18,18 +19,16 @@
                     <span class="icon-bar"></span>
                 </button>
                 @*@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
-              @if (Request.IsAuthenticated)
+              @if (Model != null)
               {
                 <strong>@Html.Encode(User.Identity.Name)</strong>
                 @Html.ActionLink("Sign Out", "Logout", "User")
                 <br/>
-                @Html.ActionLink("Create a Transaction", "Index", "Transaction")
+                @Html.ActionLink("Create a Transaction", "Transaction", "Home")
               }
               else
               {
                 @Html.ActionLink("Sign In", "Login", "User")
-                <br />
-                @Html.ActionLink("Create a Transaction", "Index", "Transaction")
               }
             </div>
             <div class="navbar-collapse collapse">

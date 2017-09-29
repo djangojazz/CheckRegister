@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace AspNetMVCCheckRegister.Controllers
 {
@@ -27,6 +28,7 @@ namespace AspNetMVCCheckRegister.Controllers
 
         if (user != null)
         {
+          FormsAuthentication.SetAuthCookie(user.UserName, false);
           return RedirectToAction("Index", "Home", new WebUser(user.UserName, user.Password));
         }
         else
@@ -37,6 +39,7 @@ namespace AspNetMVCCheckRegister.Controllers
       return View(user);
     }
 
+    #region NewUser
     [HttpGet]
     public ActionResult NewUser(string userName)
     {
@@ -60,7 +63,8 @@ namespace AspNetMVCCheckRegister.Controllers
       }
 
       return View(user);
-    }
+    } 
+    #endregion
 
     public ActionResult Logout()
     {
