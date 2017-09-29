@@ -6,28 +6,36 @@
 }
 
 <h1>Transactions and Summary</h1>
-
-<table>
-  <thead>
-    <tr>
-      <td>TransactionId</td>
-      <td>TransactionType</td>
-      <td>Amount</td>
-      <td>Created</td>
-      <td>RunningTotal</td>
-    </tr>
-  </thead>
-
-  @foreach (var tran in Model.Transactions)
-  {
-    <tr>
-      <td>@tran.TransactionId</td>
-      <td>@tran.TransactionType</td>
-      <td>@tran.Amount</td>
-      <td>@tran.Created</td>
-      <td>@tran.RunningTotal</td>
-    </tr>
-  }
-  <hr />
-  <h2>Your current Balance is @Model.Balance</h2>
-</table>
+<div id="transactionsContent" class="body-content">
+@if (Model?.Transactions != null && (Model?.Transactions?.Any() ?? false))
+{
+  <table id="transactionsTable" class="table table-striped" cellpadding="2" >
+    <thead class="thead">
+      <tr>
+        <th>TransactionId</th>
+        <th>TransactionType</th>
+        <th>Amount</th>
+        <th>Created</th>
+        <th>RunningTotal</th>
+      </tr>
+    </thead>
+    @foreach (var tran in Model?.Transactions)
+    {
+      <tr>
+        <td>@tran.TransactionId</td>
+        <td>@tran.TransactionType</td>
+        <td>@tran.Amount</td>
+        <td>@tran.Created</td>
+        <td>@tran.RunningTotal</td>
+      </tr>
+    }
+  </table>
+  <div id="transactionsSummary" class="panel-footer caption">
+    <h2>Your current Balance is @Model.Balance</h2>
+  </div>
+}
+else
+{
+  <h2>You currently have no transactions</h2>
+}
+</div>
