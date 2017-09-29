@@ -26,16 +26,12 @@ namespace AspNetMVCCheckRegister.Controllers
         var exists = _dataController.Exists(user.UserName);
         if (!exists) { return RedirectToAction("NewUser", "User", new { userName = user.UserName }); }
 
-        if (user != null)
-        {
-          FormsAuthentication.SetAuthCookie(user.UserName, false);
-          return RedirectToAction("Index", "Home", new WebUser(user.UserName, user.Password));
-        }
-        else
-        {
-          ModelState.AddModelError("", "Login data is missing and required");
-        }
+        user.Authenticated = _dataController.Authenticate(user.UserName, user.Password);
+
+        if (user.Authenticated) { return RedirectToAction("Index", "Home", user); }
+        else { ModelState.AddModelError("", "UserName or Password is incorrect"); }
       }
+
       return View(user);
     }
 
