@@ -9,6 +9,13 @@ namespace AspNetMVCCheckRegister.Models
 {
   public class WebTransaction
   {
+    public WebTransaction() {}
+
+    public WebTransaction(string userName)
+    {
+      UserName = userName;
+    }
+
     [Required]
     public string UserName { get; set; }
     [Required]

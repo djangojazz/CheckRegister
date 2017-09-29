@@ -27,6 +27,5 @@ namespace AspNetMVCCheckRegister.Models
     public WebTransaction TransactionRequest { get; set; }
     public List<Transaction> Transactions { get; set; } = new List<Transaction>();
     public double Balance { get; set; }
-    public TransactionType SelectedTransactionType { get; set; }
   }
 }

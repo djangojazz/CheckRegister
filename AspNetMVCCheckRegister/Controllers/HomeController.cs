@@ -19,28 +19,24 @@ namespace AspNetMVCCheckRegister.Controllers
     }
 
     [HttpGet]
-    public ActionResult Transaction(WebUser user)
+    public ActionResult Transaction(WebUser user, bool empty = false)
     {
       return View(user);
     }
 
     [HttpPost]
-    public ActionResult Transaction(WebTransaction user)
+    public ActionResult Transaction(WebUser user)
     {
-      var x = user;
-
-      //if (ModelState.IsValid)
-      //{
-      //  if (user.Password != null)
-      //  {
-      //    using (var data = new DataController()) { data.CreateUser(user); }
-      //    return RedirectToAction("Login", "User", new { userName = user.UserName, password = user.Password });
-      //  }
-      //  else
-      //  {
-      //    ModelState.AddModelError("", "Password is missing and required");
-      //  }
-      //}
+      if (user.TransactionRequest?.Amount > 0)
+      {
+        user.TransactionRequest.UserName = user.UserName;
+        using (var data = new DataController()) { data.Post(user.TransactionRequest); }
+        return RedirectToAction("Transactions", "Home", user);
+      }
+      else
+      {
+        ModelState.AddModelError("", "Amount is missing and required");
+      }
 
       return View(user);
     }
