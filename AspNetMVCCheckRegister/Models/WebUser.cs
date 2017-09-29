@@ -27,10 +27,6 @@ namespace AspNetMVCCheckRegister.Models
     public WebTransaction TransactionRequest { get; set; }
     public List<Transaction> Transactions { get; set; } = new List<Transaction>();
     public double Balance { get; set; }
-    public static IEnumerable<WebTransactionType> TransactionTypes = new List<WebTransactionType>
-    {
-      new WebTransactionType { TransactionTypeId = 0, TransactionType = "Deposit"},
-      new WebTransactionType { TransactionTypeId = 1, TransactionType = "Withdrawal"}
-    };
+    public TransactionType SelectedTransactionType { get; set; }
   }
 }

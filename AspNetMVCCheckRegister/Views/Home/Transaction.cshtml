@@ -11,24 +11,21 @@
   @Html.ValidationSummary(true, "Invalid transaction, please try again.");
   <div>
     <h2>Login</h2>
-    TransactionTypes
-    @*<div class="editor-label">
-      @Html.LabelFor(u => u.UserName)
-    </div>
-    <div class="editor-field">
-      @Html.TextBoxFor(u => u.UserName, new { @id = "userName", @onchange = "userNameChanged();" })
-      @Html.ValidationMessageFor(u => u.UserName)
-    </div>*@
-    <%= Html.DropDownListFor(n => n.MyColorId, new SelectList(TransactionTypes, "TransactionTypeId", "TransactionType")) %>
     <div class="editor-label">
-      @Html.LabelFor(u => u.Password)
+      @Html.LabelFor(u => u.SelectedTransactionType)
+    </div>
+    <div>
+      @Html.EnumDropDownListFor(u => u.SelectedTransactionType, new { @class = "form-control" })
+    </div>
+    <div class="editor-label">
+      @Html.LabelFor(u => u.TransactionRequest.Amount)
     </div>
     <div class="editor-field">
-      @Html.PasswordFor(u => u.Password, new { @id = "password", @onchange = "userNameChanged();" })
-      @Html.ValidationMessageFor(u => u.Password)
+      @Html.TextBoxFor(u => u.TransactionRequest.Amount)
+      @Html.ValidationMessageFor(u => u.TransactionRequest.Amount)
     </div>
     <br />
-    <input type="submit" value="Create Transaction" class="btn btn-success" />
+    <input type="submit" value="Create Transaction And See Transactions" class="btn btn-success" />
   </div>
 }
 
