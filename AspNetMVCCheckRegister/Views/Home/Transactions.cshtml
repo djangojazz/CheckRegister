@@ -40,13 +40,6 @@ else
 }
   <div id="msgid"></div>
   <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      var balance = $('#transactionsTable tr td').last().html();
-      var footer = $("#transactionsSummary");
-
-      footer.html('Your current Balance is <strong>' + balance + '</strong>');
-    });
-  </script>
+  <script src="~/Scripts/transactions.js"></script>
 </div>
 
