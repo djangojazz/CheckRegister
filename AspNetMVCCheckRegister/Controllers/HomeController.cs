@@ -12,7 +12,6 @@ namespace AspNetMVCCheckRegister.Controllers
       using (var data = new DataController())
       {
         user.Transactions = data.Get(user.UserName);
-        user.Balance = user.Transactions?.OrderByDescending(x => x.TransactionId)?.FirstOrDefault()?.RunningTotal ?? 0;
       }
       
       return View(user);

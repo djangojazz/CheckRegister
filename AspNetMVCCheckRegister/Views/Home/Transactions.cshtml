@@ -5,8 +5,8 @@
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Transactions and Summary</h1>
 <div id="transactionsContent" class="body-content">
+  <h1>Transactions and Summary</h1>
 @if (Model?.Transactions != null && (Model?.Transactions?.Any() ?? false))
 {
   <table id="transactionsTable" class="table table-striped" cellpadding="2" >
@@ -30,12 +30,23 @@
       </tr>
     }
   </table>
-  <div id="transactionsSummary" class="panel-footer caption">
-    <h2>Your current Balance is @Model.Balance</h2>
+  <div class="panel-footer caption">
+    <h2 id="transactionsSummary"></h2>
   </div>
 }
 else
 {
   <h2>You currently have no transactions</h2>
 }
+  <div id="msgid"></div>
+  <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var balance = $('#transactionsTable tr td').last().html();
+      var footer = $("#transactionsSummary");
+
+      footer.html('Your current Balance is <strong>' + balance + '</strong>');
+    });
+  </script>
 </div>
+

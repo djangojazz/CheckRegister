@@ -26,6 +26,5 @@ namespace AspNetMVCCheckRegister.Models
     public bool Authenticated { get; set; }
     public WebTransaction TransactionRequest { get; set; }
     public List<Transaction> Transactions { get; set; } = new List<Transaction>();
-    public double Balance { get; set; }
   }
 }
