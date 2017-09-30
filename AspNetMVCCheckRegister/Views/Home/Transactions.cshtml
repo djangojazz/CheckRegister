@@ -4,12 +4,16 @@
   ViewBag.Title = "Transactions";
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style type="text/css">
+  .Deposit { background-color: #66ffc2; }
+  .Withdrawal { background-color: #ff9999; }
+</style>
 
 <div id="transactionsContent" class="body-content">
   <h1>Transactions and Summary</h1>
 @if (Model?.Transactions != null && (Model?.Transactions?.Any() ?? false))
 {
-  <table id="transactionsTable" class="table table-striped" cellpadding="2" >
+  <table id="transactionsTable" class="table" cellpadding="2" >
     <thead class="thead">
       <tr>
         <th>TransactionId</th>
@@ -21,7 +25,7 @@
     </thead>
     @foreach (var tran in Model?.Transactions)
     {
-      <tr>
+      <tr class="@tran.TransactionType">
         <td>@tran.TransactionId</td>
         <td>@tran.TransactionType</td>
         <td>@tran.Amount</td>

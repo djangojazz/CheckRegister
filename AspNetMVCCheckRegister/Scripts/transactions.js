@@ -1,14 +1,13 @@
-﻿$(document).ready(function () {
+﻿ $(document).ready(function () {
+      var balance = $('#transactionsTable tr td').last().html();
+      var footer = $("#transactionsSummary");
 
-  var balance = $('#transactionsTable tr td').last().html();
-  var footer = $("#transactionsSummary");
-
-  footer.html('Your current Balance is <strong>' + balance + '</strong>');
-  if (balance > 0) {
-    footer.css('color', 'green')
-  }
-  else {
-    footer.css('color', 'red')
-  }
+      footer.html('Your current Balance is <strong>' + balance + '</strong>');
+      if (balance > 0) {
+        footer.css('color', '#00ff99')
+      }
+      else {
+        footer.css('color', '#ff6666')
+      }
 
 });
