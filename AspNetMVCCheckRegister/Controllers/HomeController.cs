@@ -7,7 +7,7 @@ namespace AspNetMVCCheckRegister.Controllers
   public class HomeController : Controller
   {
     [HttpGet]
-    public ActionResult Transactions(WebUser user)
+    public ActionResult Transactions(WebUser user, bool empty = false)
     {
       using (var data = new DataController())
       {
@@ -16,15 +16,10 @@ namespace AspNetMVCCheckRegister.Controllers
       
       return View(user);
     }
-
-    [HttpGet]
-    public ActionResult Transaction(WebUser user, bool empty = false)
-    {
-      return View(user);
-    }
+    
 
     [HttpPost]
-    public ActionResult Transaction(WebUser user)
+    public ActionResult Transactions(WebUser user)
     {
       if (user.TransactionRequest?.Amount > 0)
       {

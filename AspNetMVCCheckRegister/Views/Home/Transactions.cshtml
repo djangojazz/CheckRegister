@@ -5,45 +5,73 @@
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style type="text/css">
-  .Deposit { background-color: #66ffc2; }
-  .Withdrawal { background-color: #ff9999; }
+  .Deposit {
+    background-color: #66ffc2;
+  }
+
+  .Withdrawal {
+    background-color: #ff9999;
+  }
 </style>
 
 <div id="transactionsContent" class="body-content">
   <h1>Transactions and Summary</h1>
-@if (Model?.Transactions != null && (Model?.Transactions?.Any() ?? false))
-{
-  <table id="transactionsTable" class="table" cellpadding="2" >
-    <thead class="thead">
-      <tr>
-        <th>TransactionId</th>
-        <th>TransactionType</th>
-        <th>Amount</th>
-        <th>Created</th>
-        <th>RunningTotal</th>
-      </tr>
-    </thead>
-    @foreach (var tran in Model?.Transactions)
+  <div class="col-md-4">
+    @using (Html.BeginForm())
     {
-      <tr class="@tran.TransactionType">
-        <td>@tran.TransactionId</td>
-        <td>@tran.TransactionType</td>
-        <td>@tran.Amount</td>
-        <td>@tran.Created</td>
-        <td>@tran.RunningTotal</td>
-      </tr>
+      <div class="container">
+        <div class="editor-label">
+          @Html.LabelFor(u => u.TransactionRequest.SelectedTransactionType)
+        </div>
+        <div>
+          @Html.EnumDropDownListFor(u => u.TransactionRequest.SelectedTransactionType, new { @class = "form-control" })
+        </div>
+        <div class="editor-label">
+          @Html.LabelFor(u => u.TransactionRequest.Amount)
+        </div>
+        <div class="editor-field">
+          @Html.TextBoxFor(u => u.TransactionRequest.Amount)
+          @Html.ValidationMessageFor(u => u.TransactionRequest.Amount)
+        </div>
+        <br />
+        <input type="submit" value="Create Transaction" class="btn btn-success" />
+      </div>
     }
-  </table>
-  <div class="panel-footer caption">
-    <h2 id="transactionsSummary"></h2>
   </div>
-}
-else
-{
-  <h2>You currently have no transactions</h2>
-}
-  <div id="msgid"></div>
+
+  <div class="col-md-8">
+    @if (Model?.Transactions != null && (Model?.Transactions?.Any() ?? false))
+    {
+      <table id="transactionsTable" class="table" cellpadding="2">
+        <thead class="thead">
+          <tr>
+            <th>TransactionId</th>
+            <th>TransactionType</th>
+            <th>Amount</th>
+            <th>Created</th>
+            <th>RunningTotal</th>
+          </tr>
+        </thead>
+        @foreach (var tran in Model?.Transactions)
+        {
+          <tr class="@tran.TransactionType">
+            <td>@tran.TransactionId</td>
+            <td>@tran.TransactionType</td>
+            <td>@tran.Amount</td>
+            <td>@tran.Created</td>
+            <td>@tran.RunningTotal</td>
+          </tr>
+        }
+      </table>
+      <div class="panel-footer caption">
+        <h2 id="transactionsSummary"></h2>
+      </div>
+    }
+    else
+    {
+      <h2>You currently have no transactions</h2>
+    }
+  </div>
   <script src="~/Scripts/jquery-1.10.2.min.js"></script>
   <script src="~/Scripts/transactions.js"></script>
 </div>
-

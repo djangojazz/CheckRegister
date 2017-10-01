@@ -24,8 +24,7 @@
             @if (Model.Authenticated)
             {
               <li>@Html.ActionLink("Existing Transactions", "Transactions", "Home", @Model, null)</li>
-              <li>@Html.ActionLink("Create a Transaction", "Transaction", "Home", @Model, null)</li>
-                    <li>@Html.ActionLink("Sign Out", "Logout", "User", @Model, null)</li>
+              <li>@Html.ActionLink("Sign Out", "Logout", "User", @Model, null)</li>
             }
           </ul>
       </div>
