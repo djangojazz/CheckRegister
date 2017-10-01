@@ -15,8 +15,9 @@
 </style>
 
 <div id="transactionsContent" class="body-content">
-  <h1>Transactions and Summary</h1>
+  
   <div class="col-md-4">
+    <h1>Transaction Entry</h1>
     @using (Html.BeginForm())
     {
       <div class="container">
@@ -30,7 +31,7 @@
           @Html.LabelFor(u => u.TransactionRequest.Amount)
         </div>
         <div class="editor-field">
-          @Html.TextBoxFor(u => u.TransactionRequest.Amount)
+          @Html.TextBoxFor(u => u.TransactionRequest.Amount, new { @class = "form-control" })
           @Html.ValidationMessageFor(u => u.TransactionRequest.Amount)
         </div>
         <br />
@@ -40,6 +41,7 @@
   </div>
 
   <div class="col-md-8">
+    <h1>Existing Transactions and Summary</h1>
     @if (Model?.Transactions != null && (Model?.Transactions?.Any() ?? false))
     {
       <table id="transactionsTable" class="table" cellpadding="2">

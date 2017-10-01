@@ -1,5 +1,4 @@
 ﻿using AspNetMVCCheckRegister.Models;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace AspNetMVCCheckRegister.Controllers
