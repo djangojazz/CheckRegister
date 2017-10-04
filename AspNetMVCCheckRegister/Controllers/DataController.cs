@@ -24,7 +24,6 @@ namespace AspNetMVCCheckRegister.Controllers
       if (user == null) { return null; }
 
       return user?.TransactionsWithTotals;
-        //.Select(x => new { TransactionType = x.TransactionType, Amount = x.Amount, Created = x.Created });
     }
     
     [HttpGet, Route("api/checkRegister/exists/{userName}")]
